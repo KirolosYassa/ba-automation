@@ -1,0 +1,96 @@
+// @import "abstracts/variables";
+
+/******* offer Details  *******/
+#offer-details-section {
+    text-align: center;
+    background-color: $green-color;
+    padding-bottom: 2rem;
+    border-radius: 20px;
+
+    @include baby-bear {
+        padding-bottom: 2rem;
+        border-radius: 20px;
+    }
+}
+
+.offer-details {
+    text-align: left;
+    color: $brown-color;
+    width: 100%;
+    padding: 5% 7%;
+    margin: 0%;
+    border-radius: 20px;
+
+    @include baby-bear {
+        text-align: left;
+    }
+
+    h2 {
+
+        @include baby-bear {
+            font-size: 1.5rem;
+        }
+    }
+
+    &:nth-child(odd) {
+        // text-align: left;
+        background-color: $green-color;
+        height: auto;
+
+        img {
+            border-radius: $border-curly $border-semi-curly $border-curly $border-semi-curly;
+
+            @include baby-bear {
+                width: 15rem;
+                height: auto;
+                border-radius: ($border-curly/4) ($border-semi-curly/4) ($border-curly/4) ($border-semi-curly/4);
+            }
+        }
+    }
+
+    &:nth-child(even) {
+        // text-align: left;
+        background-color: $white-color;
+        height: auto;
+
+        img {
+            border-radius: $border-semi-curly $border-curly $border-semi-curly $border-curly;
+
+            @include baby-bear {
+                width: 15rem;
+                height: auto;
+                border-radius: ($border-semi-curly/4) ($border-curly/4) ($border-semi-curly/4) ($border-curly/4);
+            }
+        }
+    }
+
+    img {
+
+        width: 30rem;
+        height: auto;
+        border: 3px solid $brown-color;
+
+        @include baby-bear {
+            margin-block-end: 5%;
+            width: 15rem;
+            height: 10rem;
+            border-radius: ($border-semi-curly/4) ($border-curly/4) ($border-semi-curly/4) ($border-curly/4);
+        }
+    }
+
+    span {
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    p {
+        white-space: pre-line;
+    }
+
+    div {
+        &:nth-child(2) {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    }
+}

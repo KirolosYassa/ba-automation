@@ -1,0 +1,61 @@
+.o-dot {
+    position: absolute;
+    display: block;
+    min-width: 20px;
+    min-height: 20px;
+    inset-block-start: 30%;
+    inset-inline-start: 50%;
+    margin: -8px 0 0 -8px;
+    background: #ffffff;
+    border-radius: 100%;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    z-index: 1;
+    transform: scale(1.3);
+    transition-property: transform;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    transition: all 0.25s ease-in-out;
+    animation: 1.4s ease-in-out infinite;
+
+    @include baby-bear {
+        transform: scale(1);
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+
+    &:after {
+        position: absolute;
+        content: "";
+        min-width: 40px;
+        min-height: 40px;
+        inset-inline-start: -10px;
+        inset-block-start: -10px;
+        border-radius: 100%;
+        background: rgba(255, 255, 255, 0.4);
+        // -webkit-animation: 1.4s shopTheLookDotKeyframe ease-in-out infinite;
+    }
+
+    &:hover {
+        transform: scale(1.5);
+    }
+}
+
+.o-dot-offer-img-1 {
+    inset-block-start: 38%;
+    inset-inline-start: 32%;
+}
+
+.o-dot-offer-img-2 {
+    inset-block-start: 52%;
+    inset-inline-start: 63%;
+}
+
+.o-dot-offer-img-3 {
+    inset-block-start: 38%;
+    inset-inline-start: 67%;
+}

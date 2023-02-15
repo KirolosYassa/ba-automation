@@ -1,0 +1,88 @@
+*,
+::after,
+::before {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  width: auto;
+}
+
+*:active {
+  outline: none;
+}
+
+#header-main {
+  position: fixed;
+  width: 100%;
+  // overflow: hidden;
+  top: 0;
+  z-index: 25;
+  background-color: #c3dd94;
+  filter: drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.25));
+}
+
+.website-icon {
+  border-radius: 100%;
+}
+
+html,
+body {
+  // width: 100%;
+  // height: 100%;
+  // margin: 0px;
+  // padding: 0px;
+
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+  background-color: $white-color;
+  margin: 0;
+  padding: 0 !important;
+  // padding-right: 2% !important;
+  overflow: initial;
+  word-break: normal;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+
+  @include baby-bear {
+    text-align: center;
+  }
+}
+
+.padding-body-zero {
+  padding: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0px;
+}
+
+.modal {
+  img {
+    text-align: center;
+    margin: auto;
+    height: 80% !important;
+    width: 100% !important;
+  }
+
+  button {
+    color: $brown-color !important;
+  }
+
+  .ok-modal {
+    color: $white-color !important;
+
+    &:hover {
+      color: $brown-color !important;
+    }
+  }
+}
+
+#msg-arrow {
+  width: 8rem !important;
+}

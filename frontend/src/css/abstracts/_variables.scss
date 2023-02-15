@@ -1,0 +1,29 @@
+$red-color: #ff6c6c;
+$green-color: #c3dd94;
+$black-green-color: #97ce68;
+$selectedItem-green-color: #739753;
+$white-color: #f6f6f6;
+$black-color: #303030;
+$yellow-color: #fffae0;
+$brown-color: #604118;
+
+$startAlign: left;
+$endAlign: right;
+
+$display: block;
+
+$offerImageSize: 110%;
+
+$border-curly: 150px;
+$border-semi-curly: 20px;
+
+$breakpoints: (
+    "nano-bear": "max-width: 400px",
+    
+    "baby-bear": "max-width: 600px",
+    
+    "mama-bear": "max-width: 900px",
+    
+    "papa-bear": "min-width: 1200px",
+    
+);

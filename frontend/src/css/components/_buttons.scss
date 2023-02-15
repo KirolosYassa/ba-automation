@@ -1,0 +1,143 @@
+.btn {
+    color: $green-color;
+    border: 3px solid $brown-color;
+    border-radius: 20px !important;
+    font-weight: 900;
+    background-color: $brown-color;
+    margin: 1rem;
+
+    &:hover {
+        color: $brown-color;
+        background-color: $green-color;
+    }
+}
+
+.btn-greenBackgrounded {
+    
+    &:hover {
+        background-color: $green-color;
+    }
+}
+
+.btn-yellowBackgrounded {
+    color: $yellow-color;
+
+    &:hover {
+        background-color: $yellow-color;
+    }
+}
+
+.btn-whiteBackgrounded {
+    color: $white-color;
+
+    &:hover {
+        background-color: $white-color;
+    }
+}
+
+.order-now-btn-nav {
+    font-size: 11px !important;
+
+    @include baby-bear {
+        font-size: 0.5rem !important;
+    }
+
+}
+
+
+.checkout-btn {
+    // button {
+    //     // padding: 0%;
+    //     padding-bottom: 40px !important;
+    // }
+    padding-block-end: 40px;
+    width: 200px;
+    height: 35px;
+    border: none;
+    color: $white-color;
+    border-radius: 5px;
+    background-color: $black-green-color;
+    margin: 3% auto 1%;
+    font-size: 1.5rem !important;
+
+    &:hover {
+        background-color: $green-color;
+    }
+
+    &:active {
+        background-color: $green-color;
+    }
+}
+
+.btn-add {
+    background: $black-green-color;
+    border-radius: 20px !important;
+    padding: 8px 6px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.7rem !important;
+    max-width: fit-content;
+
+    // &:hover {
+    //     background: $green-color;
+
+    // }
+}
+
+.btn-remove {
+    background: transparent;
+    border: none !important;
+    // padding: 8px 6px;
+    color: $black-color;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 0.7rem !important;
+    opacity: 70%;
+
+    // &:hover {
+    //     color: $black-color;
+    //     opacity: 90%;
+    // }
+}
+
+.btn-add-cart {
+    background-color: white;
+    border: none;
+    padding-inline-start: 0px;
+}
+
+.btn-remove-cart {
+    background-color: white;
+    border: none;
+    padding-inline-end: 0px;
+}
+
+.applyBtn{
+    
+    padding-block-end: 40px;
+    width: 200px;
+    height: 35px;
+    border: none;
+    color: $white-color;
+    border-radius: 5px;
+    background-color: $black-green-color;
+    margin: 3% auto 1%;
+    font-size: 1.5rem !important;
+
+    &:hover {
+        background-color: $green-color;
+    }
+
+    &:active {
+        background-color: $green-color;
+    }
+}
+
+.removeApplyBtn{
+    border: 0px;
+    color: red;
+    background-color: transparent;
+    padding: 0px;
+    text-decoration: underline;
+    margin: auto auto 1rem auto;
+}

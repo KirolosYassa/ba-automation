@@ -1,0 +1,34 @@
+@import "abstracts/variables";
+@import "abstracts/functions";
+@import "abstracts/mixins";
+
+@import "base/base";
+@import "base/typography";
+
+@import "partials/freeShippingBar";
+@import "partials/navigationBar";
+@import "partials/offer";
+@import "partials/offerBoxed";
+@import "partials/offerDetails";
+@import "partials/reviews";
+@import "partials/bestSellingProducts";
+@import "partials/checkout";
+@import "partials/footer";
+
+@import "components/buttons";
+@import "components/carousel";
+@import "components/languageSlider";
+@import "components/cart";
+@import "components/logo";
+@import "components/price";
+@import "components/titles";
+@import "components/o-dot";
+@import "components/go-to-up";
+@import "components/loader";
+@import "components/dropDown";
+@import "components/messenger";
+
+@import "pages/homePage";
+@import "pages/thankyouPage";
+
+@import "themes/normalTheme";

@@ -1,0 +1,3 @@
+@function respond-to($typeDimension) {
+  @return map-get($breakpoints, $typeDimension);
+}

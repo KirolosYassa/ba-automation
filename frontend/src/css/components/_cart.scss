@@ -1,0 +1,36 @@
+.cart {
+    border-right: 0px;
+
+    img {
+        border-right: none;
+        border-right-style: none;
+        height: 30px;
+        width: 30px;
+    }
+
+    .badge {
+        position: absolute;
+        top: 20%;
+        right: 3%;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: red;
+        color: $white-color;
+        width: fit-content;
+        font-size: 0.7rem;
+        // size: 2%;
+
+        @include baby-bear {
+            font-size: 0.7rem;
+            top: 10%;
+            right: 4%;
+            padding: 2.5px 5px;
+        }
+        @include mama-bear {
+            font-size: 0.7rem;
+            top: 20%;
+            right: 4%;
+            padding: 2.5px 5px;
+        }
+    }
+}

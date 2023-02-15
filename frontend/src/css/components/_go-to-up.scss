@@ -1,0 +1,26 @@
+#go-to-top {
+  // background-image: url("../../images/Icons/Uparrow.png");
+  background-position: center;
+  border-radius: 100%;
+  padding: 1.2rem;
+  background-color: $white-color;
+  right: 40px;
+  bottom: 160px;
+  cursor: pointer;
+  position: fixed;
+  z-index: 20;
+  background-size: 60%;
+  background-repeat: no-repeat;
+
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+  // @include mama-bear {
+  //   background-size: 70%;
+  //   border: 6px solid black;
+  // }
+
+  // @include baby-bear {
+  //   background-size: 70%;
+  //   border: 2px solid black;
+
+  // }
+}

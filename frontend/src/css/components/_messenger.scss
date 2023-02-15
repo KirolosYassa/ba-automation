@@ -1,0 +1,62 @@
+.msg-activated {
+    // margin: 24px;
+    // width: 50px;
+    // height: 50px;
+    // background: #f50057;
+    // animation: zoom-in-zoom-out 1s ease infinite;
+}
+
+
+.modal-content {
+    text-align: center;
+    padding: 1rem;
+}
+
+.msg-arrow {
+    width: 8rem;
+    position: fixed;
+    bottom: 0%;
+    right: 10%;
+    z-index: 20;
+    backdrop-filter: none;
+    animation: zoom-in-zoom-out 1s ease infinite;
+
+
+
+    // @include papa-bear {
+    //     width: 8rem;
+    //     bottom: 3%;
+    //     right: 5%;
+    // }
+    @include mama-bear {
+        width: 8rem;
+        bottom: 0%;
+        right: 17%;
+    }
+    @include baby-bear {
+        width: 6rem;
+        bottom: 0%;
+        right: 22%;
+    }
+
+    @include nano-bear {
+        width: 6rem;
+        bottom: 0%;
+        right: 27%;
+    }
+}
+
+
+@keyframes msg-arrow {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(2, 2);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}

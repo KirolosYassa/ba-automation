@@ -1,0 +1,48 @@
+// @import "variables";
+
+/********************************** Navigation Bar **********************************/
+
+nav {
+    padding: 5% 10%;
+
+    .row{
+        margin-inline-end: 0;
+    }
+
+    .col-6{
+        margin: auto 0;
+        padding: 0;
+
+        button{
+            padding: 2px;
+            margin: 2px;
+        }
+    }
+}
+
+#navigation-bar {
+    background-color: $green-color;
+    padding: 0px;
+
+    nav {
+        padding: 0% 3%;
+
+        @include baby-bear {
+            padding: 0% 2%;
+        }
+    }
+}
+
+.navbar {
+    .navbar-nav {
+        .nav-link {
+            color: $brown-color;
+            font-size: 1rem;
+            letter-spacing: 0.1rem;
+
+            &:hover {
+                color: $white-color;
+            }
+        }
+    }
+}
