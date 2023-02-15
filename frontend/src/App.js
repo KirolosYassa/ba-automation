@@ -3,7 +3,7 @@ import Item from "./components/Item";
 function App() {
   return (
     <div>
-      <Item value="Hey I'm here" />
+      <Item value="Now the project is ready" />
     </div>
   );
 }
