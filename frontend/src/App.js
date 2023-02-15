@@ -4,6 +4,7 @@ function App() {
   return (
     <div>
       <Item value="Now the project is ready" />
+      <h1>This is H1 Line</h1>
     </div>
   );
 }
