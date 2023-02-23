@@ -1,9 +1,48 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Item from "./components/Item";
 
 function App() {
+  const [result, setResult] = useState(null);
+
+  const message = async () => {
+    try {
+      let res = await axios.get("http://127.0.0.1:8000/");
+      let result = res.data;
+      setResult(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    message();
+  }, []);
+
+  const [resultMsg, setResultMsg] = useState([]);
+
+  const messageMsg = async () => {
+    try {
+      let res = await axios.get("http://127.0.0.1:8000/msgs");
+      console.log(res);
+      let resultMsg = res.data;
+      setResultMsg(resultMsg);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    messageMsg();
+  }, []);
+
   return (
     <div>
-      <Item value="Now the project is ready" />
+      {result}
+      {/* {resultMsg.map((msg) => (
+        <div>{msg}</div>
+      ))} */}
+      {/* <Item value="HEy" /> */}
       {/* <h1>This is H1 Line</h1> */}
     </div>
   );
