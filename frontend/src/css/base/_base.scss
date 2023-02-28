@@ -11,6 +11,19 @@
   outline: none;
 }
 
+.App {
+  text-align: center;
+  background-image: url("../Assets/bg1.jpg");
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+h1 {
+  color: crimson;
+  font-size: large;
+  font-family: "Times New Roman", Times, serif;
+}
+
 #header-main {
   position: fixed;
   width: 100%;

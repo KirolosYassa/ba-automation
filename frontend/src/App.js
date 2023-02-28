@@ -1,71 +1,33 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Item from "./components/Item";
-
+import "./css/index.css";
+import { useEffect } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Footer from "./Components/Footer";
+import Home from "./pages/Home";
+import Myprofile from "./pages/Myprofile";
+import About from "./pages/About";
+import SingleProject from "./pages/SingleProject";
+import Addproject from "./pages/Addproject";
 function App() {
-  const [result, setResult] = useState(null);
-
-  const message = async () => {
-    try {
-      let res = await axios.get("http://127.0.0.1:8000/");
-      let result = res.data;
-      setResult(result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    message();
+    document.title = "UML generator";
   }, []);
-
-  const [resultMsg, setResultMsg] = useState([]);
-
-  const messageMsg = async () => {
-    try {
-      let res = await axios.get("http://127.0.0.1:8000/msgs");
-      console.log(res);
-      let resultMsg = res.data;
-      setResultMsg(resultMsg);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    messageMsg();
-  }, []);
-
   return (
-    <div>
-      {result}
-      {/* {resultMsg.map((msg) => (
-        <div>{msg}</div>
-      ))} */}
-      {/* <Item value="HEy" /> */}
-      {/* <h1>This is H1 Line</h1> */}
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="about" element={<About />} />
+        {/* 3ayzeen nzbot el routeen dool 3a4an da el profile bta3 user mo3yn fa --> htb2a 8aleban '/:userid/myprojects' */}
+        <Route path="Projects" element={<Myprofile />} />
+        <Route path="Projects/:projectid" element={<SingleProject />} />
+        <Route path="addproject" element={<Addproject />} />
+      </Routes>
+      <Footer></Footer>
     </div>
   );
 }
 
 export default App;
-
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Home from "./Pages/Home";
-// import Signup from "./Pages/Signup";
-// import Login from "./Pages/Login";
-
-// function App() {
-//   return (
-//     <Router>
-//       Hello World
-//       <Routes>
-//         <Route path="/" element={<Home />}></Route>
-//         <Route path="/signup" element={<Signup />}></Route>
-//         <Route path="/login" element={<Login />}></Route>
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
