@@ -1,58 +1,27 @@
 .titles {
+  margin: 0% auto 5%;
 
-    margin: 0% auto 5%;
+  @include mama-bear {
+    padding: 0;
+    // margin-inline-start: auto;
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 3rem;
+    margin: 4% 27% auto;
+    line-height: 1.5;
 
     @include mama-bear {
-        padding: 0;
-        // margin-inline-start: auto;
-
+      font-size: 2.5rem;
+      width: 80%;
+      margin: auto;
     }
 
-    h1 {
-        font-weight: 600;
-        font-size: 3rem;
-        margin: 4% 27% auto;
-        line-height: 1.5;
-
-
-        @include mama-bear {
-            font-size: 2.5rem;
-            width: 80%;
-            margin: auto;
-        }
-
-        @include baby-bear {
-            font-size: 1.8rem;
-            width: 80%;
-            margin: auto;
-        }
+    @include baby-bear {
+      font-size: 1.8rem;
+      width: 80%;
+      margin: auto;
     }
-}
-
-
-html[dir="rlt"] {
-    letter-spacing: 0;
-    text-decoration-skip-ink: auto;
-    font-family: 'Cairo', sans-serif;
-
-    img {
-        transform: rotateY(180deg);
-        // transform: scaleX(-1);
-    }
-}
-
-.ar {
-    display: none;
-    // float: inline-end;
-    font-family: 'Cairo', sans-serif;
-    unicode-bidi: embed;
-    direction: rtl;
-}
-
-.en {
-    font-family: "Poppins", sans-serif;
-}
-
-.icons-thankyou {
-    filter: brightness(0);
+  }
 }

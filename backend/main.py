@@ -11,12 +11,15 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "https://ba-automation-5a4ae.web.app/"
+    "https://ba-automation-5a4ae.web.app",
+    "http://localhost:3000",
+    "http://127.0.0.1/3000",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    # allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -24,7 +27,13 @@ app.add_middleware(
 
 @app.get("/")
 def index():
-    return {"msg":"Hello World!"}
+    # return {"The Frontend is connected to the backend"}
+    return {"msg": "The Frontend is connected to the backend"}
+
+@app.get("/msgs")
+def indexMsg():
+    # return {"Hello World!"}
+    return {"msg": "Hello World!"}
 
 students={
     1:{
