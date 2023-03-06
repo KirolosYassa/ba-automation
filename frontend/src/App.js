@@ -32,27 +32,3 @@ function App() {
 }
 
 export default App;
-<<<<<<< HEAD
-
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Home from "./Pages/Home";
-// import Signup from "./Pages/Signup";
-// import Login from "./Pages/Login";
-
-// function App() {
-//   return (
-//     <Router>
-//       Hello World
-//       <Routes>
-//         <Route path="/" element={<Home />}></Route>
-//         <Route path="/signup" element={<Signup />}></Route>
-//         <Route path="/login" element={<Login />}></Route>
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-=======
->>>>>>> 7bf6c0f05205c174bcc68abc671bfb5c939f1d58
