@@ -11,6 +11,7 @@ function Addproject(){
   const navigate=useNavigate();
   const addPro=(e)=>{
     e.preventDefault();
+    // API WIth backends
     axios.post("http://localhost:8000/Projects",
     {Name,description}).then((data)=>{console.log(data);});
     Swal.fire({
