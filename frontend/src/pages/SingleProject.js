@@ -84,6 +84,7 @@ function SingleProject() {
           </tr>
         </thead>
         <tbody>
+          
           <tr>
             <td>1</td>
             <td >{project.input_docs == null ? <button className="btn btn-success" onClick={addFile}>Add File</button> : <a href='#'>{project.input_docs}</a>}</td>
