@@ -1,6 +1,6 @@
 import "./css/index.css";
 import { useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Footer from "./Components/Footer";
@@ -15,6 +15,7 @@ function App() {
   }, []);
   return (
     <div className="App">
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
