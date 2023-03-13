@@ -1,3 +1,14 @@
+/* 
+cd .\frontend\
+npm start
+
+
+cd .\frontend\
+run npm build
+npm start
+
+*/
+
 import "./css/index.css";
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
@@ -15,15 +26,14 @@ function App() {
   }, []);
   return (
     <div className="App">
-      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="about" element={<About />} />
         {/* 3ayzeen nzbot el routeen dool 3a4an da el profile bta3 user mo3yn fa --> htb2a 8aleban '/:userid/myprojects' */}
-        <Route path="Projects" element={<Myprofile />} />
-        <Route path="Projects/:projectid" element={<SingleProject />} />
+        <Route path="projects/:user_id" element={<Myprofile />} />
+        <Route path="projects/:projectid" element={<SingleProject />} />
         <Route path="addproject" element={<Addproject />} />
       </Routes>
       <Footer></Footer>
