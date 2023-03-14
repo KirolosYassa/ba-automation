@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
   let isValid = false;
@@ -18,7 +18,7 @@ function Login() {
   const getUsers = () => {
     // fetch statment or axios for getting all users
     axios.get("http://localhost:8000/users").then((data) => {
-      // console.log(data.data);
+      console.log(data.data);
       setUsers(data.data);
     });
   };
@@ -42,32 +42,54 @@ function Login() {
     };
 
     setUser({ email: input_username, password: input_pass });
-    axios
-      .post("http://localhost:8000/login", user_data)
-      .then((data) => {
-        response = data;
-        console.log(data.data);
-        if (response.data === "UserAlreadyExists") {
-          Swal.fire({
-            title: "User already exists",
-            icon: "error",
-          }).then();
-        } else if (
-          response.data ===
-          "Password must be more than or equal to 6 characters"
-        ) {
-          Swal.fire({
-            title: response.data,
-            icon: "warning",
-          }).then();
-        } else if (response.data === "User Added") {
-          Swal.fire({
-            title: "Successfully Signed Up",
-            icon: "success",
-          }).then();
+
+    async function onSubmit(e) {
+      e.preventDefault();
+      try {
+        const auth = getAuth();
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          user.email,
+          user.password
+        );
+        console.log("userCredential = " + userCredential);
+        console.log("userCredential.user = " + userCredential.user);
+        if (userCredential.user) {
+          navigate("/profile");
         }
-      })
-      .then();
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      }
+    }
+
+    // sign_in(user);
+    // axios
+    //   .post("http://localhost:8000/login", user_data)
+    //   .then((data) => {
+    //     response = data;
+    //     console.log(data.data);
+    //     if (response.data === "UserAlreadyExists") {
+    //       Swal.fire({
+    //         title: "User already exists",
+    //         icon: "error",
+    //       }).then();
+    //     } else if (
+    //       response.data ===
+    //       "Password must be more than or equal to 6 characters"
+    //     ) {
+    //       Swal.fire({
+    //         title: response.data,
+    //         icon: "warning",
+    //       }).then();
+    //     } else if (response.data === "User Added") {
+    //       Swal.fire({
+    //         title: "Successfully Signed Up",
+    //         icon: "success",
+    //       }).then();
+    //     }
+    //   })
+    //   .then();
 
     // for (const [key, value] of Object.entries(users)) {
     //   console.log(key + ":" + value.email);
@@ -109,7 +131,7 @@ function Login() {
   return (
     <>
       <Header />
-      <form className="centering mt-5">
+      <form className="centering mt-5" onSubmit={() => onSubmit()}>
         <h3>Sign In</h3>
         <div className="mb-3">
           <label>Email address</label>
@@ -152,16 +174,16 @@ function Login() {
             to="#"
             type="submit"
             className="btn btn-primary"
-            onClick={checkusers}
+            // onClick={this.onSubmit}
           >
             Log in
           </button>
         </div>
-        <p className="forgot-password text-right">
-          {/* isa lw fe wa2t hb2a a3ml reset  password page form */}
-          <a href="#">Forgot password?</a>
-        </p>
       </form>
+      <p className="forgot-password text-right">
+        {/* isa lw fe wa2t hb2a a3ml reset  password page form */}
+        <a href="#">Forgot password?</a>
+      </p>
     </>
   );
 }
