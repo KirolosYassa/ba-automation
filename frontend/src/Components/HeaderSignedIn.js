@@ -1,5 +1,5 @@
 import "../css/index.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Image1 from "../Assets/newlogo-removebg-preview.png";
 import { auth } from "../firebase";
 
@@ -10,12 +10,13 @@ function HeaderSignedIn() {
     console.log("User has loged out");
     navigate("/sign-in");
   }
+  let { user_id } = useParams();
 
   return (
     <>
       <nav className="navbar" style={{ backgroundColor: "tan" }}>
         <div className="container">
-          <Link className="navbar-brand" to="/Projects">
+          <Link className="navbar-brand" to={`/profile/${user_id}`}>
             <img className="img-circle" alt="M4 mawgoda " src={Image1} />
             <p>UML generator</p>
           </Link>
@@ -33,12 +34,16 @@ function HeaderSignedIn() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link className="nav-link active" to="/">
                   Home
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"/Projects"}>
+                <Link
+                  className="nav-link"
+                  aria-current="page"
+                  to={`/profile/${user_id}`}
+                >
                   My projects
                 </Link>
               </li>
