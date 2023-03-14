@@ -13,29 +13,41 @@ function Myprofile() {
 
   const getProjects = () => {
     // fetch statment for getting all projects for a specific user
-    console.log("user_id in profile route = " + user_id);
+    // console.log("user_id in profile route = " + user_id);
     axios
       .get(`http://localhost:8000/projects?user_id=${user_id}`)
       .then((data) => {
-        console.log(data);
-        console.log(data.data.data);
-        let all_projects = [];
-        let projectsComing = data.data.data;
-        for (const key in projectsComing) {
-          if (projectsComing.hasOwnProperty.call(projectsComing, key)) {
-            all_projects.push(projectsComing[key]);
+        // console.log(data);
+        // console.log(data.data.data);
+        var projectsIds = data.data.data;
+        // console.log(projectsIds);
+        for (const key in projectsIds) {
+          if (projectsIds.hasOwnProperty.call(projectsIds, key)) {
+            const element = projectsIds[key];
+            console.log(key);
+            // console.log(element);
           }
         }
-        // projectsComing.map((project) => {
-        // });
-        console.log(all_projects);
+
+        let all_projects = [];
+
+        for (const key in projectsIds) {
+          if (projectsIds.hasOwnProperty.call(projectsIds, key)) {
+            let project = {
+              id: key,
+              name: projectsIds[key].name,
+              description: projectsIds[key].description,
+            };
+            all_projects.push(project);
+          }
+        }
+
+        // console.log(all_projects);
         setProjects(all_projects);
-        // console.log({projects});
-        // console.log(data.data);
       });
   };
   useEffect(() => {
-    console.log("user_id in profile route = " + user_id);
+    // console.log("user_id in profile route = " + user_id);
     getProjects();
   }, []);
   return (
@@ -46,16 +58,24 @@ function Myprofile() {
       {/* Cards of projects  */}
       <div className="row">
         {/* Makan el projects . map 34an a Loop 3la kol elProjects */}
-
         {projects.map((project) => {
+          {
+            /* console.log(project); */
+          }
+          {
+            /* console.log(projects[0]); */
+          }
           return (
-            <div className="col-3" key={project}>
+            <div className="col-3" key={project.id}>
               <div className="card  mt-5 ">
                 {/* Displaying cards for  project name , description, and button open project */}
                 <h2 className="card-title">{project.name}</h2>
                 <div className="card-body">
                   <p className="card-text">{project.description}</p>
-                  <Link className="btn btn-primary" to={`/Projects/${project}`}>
+                  <Link
+                    className="btn btn-primary"
+                    to={`/profile/user_id/${user_id}/project/${project.id}`}
+                  >
                     Open
                   </Link>
                 </div>
@@ -67,7 +87,10 @@ function Myprofile() {
           <h2 className="card-title text-secondary">New Project?</h2>
           <div className="card-body">
             <br />
-            <Link to="/addproject" className="btn btn-success mt-3">
+            <Link
+              to={`/addproject/${user_id}`}
+              className="btn btn-success mt-3"
+            >
               {" "}
               Add{" "}
             </Link>

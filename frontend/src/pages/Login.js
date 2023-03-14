@@ -25,7 +25,7 @@ function Login() {
     email: "",
     password: "",
   });
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const { email, password } = user;
 
   function onChange(e) {
@@ -51,13 +51,13 @@ function Login() {
       console.log("userCredential.user.uid = " + userCredential.user.uid);
       if (userCredential.user) {
         console.log("Have been navigated");
-        // navigation({
+        // navigate({
         //   pathname: "/profile",
         //   search: `?uesr_id=${userCredential.user.uid}`,
         // });
 
-        navigation(`/profile/${userCredential.user.uid}`);
-        // navigation.navigate(`/profile`, { user_id: userCredential.user.uid });
+        navigate(`/profile/${userCredential.user.uid}`);
+        // navigate.navigate(`/profile`, { user_id: userCredential.user.uid });
       }
     } catch (error) {
       let errorType = error.toString().split("/");

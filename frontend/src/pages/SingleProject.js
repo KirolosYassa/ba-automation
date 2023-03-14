@@ -6,8 +6,12 @@ import HeaderSignedIn from "../Components/HeaderSignedIn";
 import axios from "axios";
 import Swal from "sweetalert2";
 function SingleProject() {
-  let [project, setProject] = useState({});
-  let params = useParams();
+  let [project, setProject] = useState({
+    name: "",
+    description: "",
+    user_id: "",
+  });
+  let { user_id, project_id } = useParams();
   const navigate = useNavigate();
   const deleteProject = () => {
     Swal.fire({
@@ -21,13 +25,24 @@ function SingleProject() {
       console.log(result);
       if (result.isDenied) {
         axios
-          .delete(`http://localhost:8000/Projects/${params.projectid}`)
+          .delete(
+            `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}`
+          )
           .then((data) => {
-            Swal.fire("Project Deleted!", "", "success");
+            console.log(data);
+            Swal.fire({
+              title: "Project Deleted!",
+              icon: "success",
+            });
+          })
+          .then(() => {
+            navigate(`/profile/${user_id}`);
           });
-        navigate("/Projects");
       } else {
-        Swal.fire("Project is not deleted", "", "info");
+        Swal.fire({
+          title: "Project is not deleted.",
+          icon: "info",
+        });
       }
     });
   };
@@ -62,9 +77,20 @@ function SingleProject() {
   const getSingleProject = () => {
     // fetch or axios stat for getting project info from params then setting it with setProject
     axios
-      .get(`http://localhost:8000/Projects/${params.projectid}`)
+      .get(
+        `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}`
+      )
       .then((data) => {
-        setProject(data.data);
+        // console.log(data);
+        console.log(data.data.data);
+        let project_object = data.data.data;
+
+        setProject({
+          name: project_object[project_id].name,
+          description: project_object[project_id].description,
+          user_id: project_object[project_id].user_id,
+        });
+        console.log(project);
       });
   };
   useEffect(() => {
@@ -75,7 +101,7 @@ function SingleProject() {
       <HeaderSignedIn />
 
       <h1 className="text-left mt-3">Project Name:</h1>
-      <h2>{project.Name}</h2>
+      <h2>{project.name}</h2>
       <div className="row px-5 mx-5 col-9">
         <table className="table table-bordered table-striped table-dark mt-5">
           <thead>

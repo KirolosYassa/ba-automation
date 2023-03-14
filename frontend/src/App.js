@@ -34,8 +34,11 @@ function App() {
         {/* 3ayzeen nzbot el routeen dool 3a4an da el profile bta3 user mo3yn fa --> htb2a 8aleban '/:userid/myprojects' */}
         {/* <Route path="profile" element={<Myprofile />} /> */}
         <Route path="profile/:user_id" element={<Myprofile />} />
-        <Route path="projects/:projectid" element={<SingleProject />} />
-        <Route path="addproject" element={<Addproject />} />
+        <Route
+          path="profile/user_id/:user_id/project/:project_id"
+          element={<SingleProject />}
+        />
+        <Route path="addproject/:user_id" element={<Addproject />} />
       </Routes>
       <Footer></Footer>
     </div>
