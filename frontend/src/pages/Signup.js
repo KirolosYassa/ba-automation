@@ -19,21 +19,35 @@ function Signup() {
     role: Role,
   };
   const adduser = (e) => {
+    var response = "";
     console.log(user_data);
     e.preventDefault();
     axios
-      .post(
-        "http://localhost:8000/signup",
-        // axios.post("http://localhost:8000/users",
-        user_data
-      )
+      .post("http://localhost:8000/signup", user_data)
       .then((data) => {
-        console.log(data);
-      });
-    Swal.fire({
-      title: "Successfully Signed Up",
-      icon: "success",
-    }).then();
+        response = data;
+        console.log(data.data);
+        if (response.data === "UserAlreadyExists") {
+          Swal.fire({
+            title: "User already exists",
+            icon: "error",
+          }).then();
+        } else if (
+          response.data ===
+          "Password must be more than or equal to 6 characters"
+        ) {
+          Swal.fire({
+            title: response.data,
+            icon: "warning",
+          }).then();
+        } else if (response.data === "User Added") {
+          Swal.fire({
+            title: "Successfully Signed Up",
+            icon: "success",
+          }).then();
+        }
+      })
+      .then();
 
     // Swal.fire({
     //   title: `Project " ${Name}" added successfully `,

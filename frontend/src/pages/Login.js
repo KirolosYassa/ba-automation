@@ -1,9 +1,12 @@
 import "../css/index.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Component } from "react";
 import Header from "../Components/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 function Login() {
   let isValid = false;
   // lesa hn3ml el rember me w el forgot password
@@ -25,42 +28,79 @@ function Login() {
     // b3d myt2kd en el user mwgod yro7 l my proofile b navigate
     // lazem a3ml prevent default 3a4an myrg3 y3ml refresh
     e.preventDefault();
+    var response = "";
 
     // for (const key of Object.keys(users)) {
     //   console.log(key + ":" + key["email"]);
     // }
-    for (const [key, value] of Object.entries(users)) {
-      console.log(key + ":" + value.email);
+    var user_data = {
+      first_name: "",
+      last_name: "",
+      email: input_username,
+      password: input_pass,
+      role: "",
+    };
 
-      if (value.email == input_username && value.password == input_pass) {
-        setUser(value);
-        isValid = true;
-        axios
-          .get(`http://localhost:8000/user-id?email=${value.email}`)
-          .then((data) => {
-            console.log(data.data["id"]);
-            console.log("USer ID 1 = " + data.data["id"]);
-            setUsers(data.data);
-            user_id = data.data["id"];
-          })
-          .then((data) => {
-            console.log(value);
-            console.log("USer ID 2 = " + user_id);
-            navigate(`/projects?user_id=${user_id}`);
-          });
-      }
-    }
-    // users.map((user) => {
-    //   user.email == input_username &&
-    //     user.password == input_pass &&
-    //     setUser(user);
-    //   console.log(user);
-    //   // SHA8ALAAAAAA LOLOLOLOLOLYYYYY w bygeb el user el folany mazboot
-    // });
-    if (isValid) {
-      // isValid = true;
-      console.log("allaho akbar");
-    } else console.log("ya rabyyy");
+    setUser({ email: input_username, password: input_pass });
+    axios
+      .post("http://localhost:8000/login", user_data)
+      .then((data) => {
+        response = data;
+        console.log(data.data);
+        if (response.data === "UserAlreadyExists") {
+          Swal.fire({
+            title: "User already exists",
+            icon: "error",
+          }).then();
+        } else if (
+          response.data ===
+          "Password must be more than or equal to 6 characters"
+        ) {
+          Swal.fire({
+            title: response.data,
+            icon: "warning",
+          }).then();
+        } else if (response.data === "User Added") {
+          Swal.fire({
+            title: "Successfully Signed Up",
+            icon: "success",
+          }).then();
+        }
+      })
+      .then();
+
+    // for (const [key, value] of Object.entries(users)) {
+    //   console.log(key + ":" + value.email);
+
+    //   if (value.email == input_username && value.password == input_pass) {
+    //     setUser(value);
+    //     isValid = true;
+    //     axios
+    //       .get(`http://localhost:8000/user-id?email=${value.email}`)
+    //       .then((data) => {
+    //         console.log(data.data["id"]);
+    //         console.log("USer ID 1 = " + data.data["id"]);
+    //         setUsers(data.data);
+    //         user_id = data.data["id"];
+    //       })
+    //       .then((data) => {
+    //         console.log(value);
+    //         console.log("USer ID 2 = " + user_id);
+    //         navigate(`/projects?user_id=${user_id}`);
+    //       });
+    //   }
+    // }
+    // // users.map((user) => {
+    // //   user.email == input_username &&
+    // //     user.password == input_pass &&
+    // //     setUser(user);
+    // //   console.log(user);
+    // //   // SHA8ALAAAAAA LOLOLOLOLOLYYYYY w bygeb el user el folany mazboot
+    // // });
+    // if (isValid) {
+    //   // isValid = true;
+    //   console.log("allaho akbar");
+    // } else console.log("ya rabyyy");
   };
 
   useEffect(() => {
@@ -119,7 +159,7 @@ function Login() {
         </div>
         <p className="forgot-password text-right">
           {/* isa lw fe wa2t hb2a a3ml reset  password page form */}
-          Forgot <a href="#">password?</a>
+          <a href="#">Forgot password?</a>
         </p>
       </form>
     </>
