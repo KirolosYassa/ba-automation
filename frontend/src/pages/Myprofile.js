@@ -59,14 +59,8 @@ function Myprofile() {
       <div className="row">
         {/* Makan el projects . map 34an a Loop 3la kol elProjects */}
         {projects.map((project) => {
-          {
-            /* console.log(project); */
-          }
-          {
-            /* console.log(projects[0]); */
-          }
           return (
-            <div className="col-3" key={project.id}>
+            <div className="col-12 col-md-6 col-lg-4" key={project.id}>
               <div className="card  mt-5 ">
                 {/* Displaying cards for  project name , description, and button open project */}
                 <h2 className="card-title">{project.name}</h2>
@@ -83,7 +77,7 @@ function Myprofile() {
             </div>
           );
         })}
-        <div className="col-2 card pl-5 m-3 mt-5">
+        <div className="col-12 col-md-6 col-lg-4 card pl-5 m-3 mt-5">
           <h2 className="card-title text-secondary">New Project?</h2>
           <div className="card-body">
             <br />

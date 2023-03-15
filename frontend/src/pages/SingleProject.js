@@ -1,17 +1,28 @@
 import "../css/index.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
 import axios from "axios";
 import Swal from "sweetalert2";
+import v4 from "../id_generator";
+import {
+  storage,
+  ref,
+  uploadBytes,
+  listAll,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "../firebase";
+
 function SingleProject() {
-  let [project, setProject] = useState({
+  const [project, setProject] = useState({
     name: "",
     description: "",
     user_id: "",
   });
-  let { user_id, project_id } = useParams();
+
+  const { user_id, project_id } = useParams();
   const navigate = useNavigate();
   const deleteProject = () => {
     Swal.fire({
@@ -49,31 +60,7 @@ function SingleProject() {
   const updateProject = () => {
     console.log(project.input_docs);
   };
-  const addFile = async () => {
-    const { value: file } = await Swal.fire({
-      title: "Select File",
-      input: "file",
-      inputAttributes: {
-        accept: "image/*",
-        "aria-label": "Upload your text file ",
-      },
-    });
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        Swal.fire({
-          title: "You uploaded File successfully",
-          icon: "success",
-        });
-        //   console.log(e.target.result);
-      };
-      reader.readAsDataURL(file);
-      project.input_docs = file;
-    }
-    // console.log(file);
-    // project.input_docs=input_file;
-    updateProject();
-  };
+
   const getSingleProject = () => {
     // fetch or axios stat for getting project info from params then setting it with setProject
     axios
@@ -93,6 +80,24 @@ function SingleProject() {
         console.log(project);
       });
   };
+
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const handleUploadFiles = (files) => {
+    const uploaded = [...uploadedFiles];
+    files.some((file) => {
+      if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+        uploaded.push(file);
+      }
+    });
+    setUploadedFiles(uploaded);
+  };
+
+  const handleFileEvent = (e) => {
+    const chosenFiles = Array.prototype.slice.call(e.target.files);
+    handleUploadFiles(chosenFiles);
+  };
+
   useEffect(() => {
     getSingleProject();
   }, []);
@@ -102,46 +107,60 @@ function SingleProject() {
 
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2>{project.name}</h2>
-      <div className="row px-5 mx-5 col-9">
-        <table className="table table-bordered table-striped table-dark mt-5">
+      <input
+        id="fileUpload"
+        type="file"
+        multiple
+        accept="*"
+        onChange={handleFileEvent}
+      />
+
+      <label htmlFor="fileUpload">
+        <a className={`btn btn-primary `}>Upload Files</a>
+      </label>
+      <div className="container">
+        <table
+          id="example"
+          className="table table-striped"
+          style={{ width: "70%" }}
+        >
           <thead>
             <tr>
-              <th>#</th>
-              <th>User Story Docs</th>
-              <th>Usecase Diagram</th>
-              <th>Class Diagram</th>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Size</th>
+              <th># of pages</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>
-                {project.input_docs == null ? (
-                  <button className="btn btn-success" onClick={addFile}>
-                    Add File
-                  </button>
-                ) : (
-                  <a href="#">{project.input_docs}</a>
-                )}
-              </td>
-              <td>
-                {project.usecase_diagramPNG == null ? (
-                  <button className="btn btn-success">Generate</button>
-                ) : (
-                  <a href="#">{project.usecase_diagramPNG}</a>
-                )}{" "}
-              </td>
-              <td>
-                {project.class_diagramPNG == null ? (
-                  <button className="btn btn-success">Generate</button>
-                ) : (
-                  <a href="#">{project.class_diagramPNG}</a>
-                )}{" "}
-              </td>
-            </tr>
+            {console.log(`uploadedFiles Before Loop = ${uploadedFiles}`)}
+            {uploadedFiles.map((file) => {
+              console.log(file);
+              console.log(file.name);
+              return (
+                <tr key={file.key}>
+                  <td>{file.type}</td>
+                  <td>{file.name}</td>
+                  <td>{(parseFloat(file.size) / 1024).toFixed(2)} KB</td>
+                  <td>###</td>
+                </tr>
+              );
+            })}
           </tbody>
+          {console.log(
+            `uploadedFiles After Loop = ${uploadedFiles.toString()}`
+          )}
+          <tfoot>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Size</th>
+              <th># of pages</th>
+            </tr>
+          </tfoot>
         </table>
       </div>
+
       <br />
       <button
         to="/Projects"

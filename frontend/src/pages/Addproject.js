@@ -37,12 +37,13 @@ function Addproject() {
         if (response.status === 200) {
           Swal.fire({
             title: `Project " ${project.name}" added successfully `,
-            icon: "info",
+            icon: "success",
             showDenyButton: false,
             showConfirmButton: true,
             confirmButtonText: "OK",
           });
-          navigate(`/profile/${user_id}`);
+          // navigate(`/profile/${user_id}`);
+          navigate(`/profile/user_id/${user_id}/project/${project.id}`);
         } else {
           Swal.fire({
             title: "Project is not added",

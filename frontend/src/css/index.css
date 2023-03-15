@@ -1,3 +1,5 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css");
+@import url("https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css");
 *,
 ::after,
 ::before {
@@ -117,6 +119,13 @@ p {
     width: 80%;
     margin: auto;
   }
+}
+
+.container {
+  text-align: left;
+}
+.container th {
+  font-size: 1rem;
 }
 
 /********************************** Navigation Bar **********************************/
