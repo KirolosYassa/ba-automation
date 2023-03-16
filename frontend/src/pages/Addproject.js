@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Button } from "bootstrap";
+// import { Button } from "bootstrap";
 import { useState } from "react";
-import { json, Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
 import Swal from "sweetalert2";
 
@@ -10,7 +10,7 @@ function Addproject() {
     name: "",
     description: "",
   });
-  let [description, setDescription] = useState("");
+
   const navigate = useNavigate();
   let { user_id } = useParams();
 
@@ -33,7 +33,8 @@ function Addproject() {
     axios
       .post(`http://localhost:8000/addproject`, project_data)
       .then((response) => {
-        console.log("response = " + response.status);
+        console.log("response.status = " + response.status);
+        console.log("response = " + response);
         if (response.status === 200) {
           Swal.fire({
             title: `Project " ${project.name}" added successfully `,
@@ -42,9 +43,10 @@ function Addproject() {
             showConfirmButton: true,
             confirmButtonText: "OK",
           });
-          // navigate(`/profile/${user_id}`);
-          navigate(`/profile/user_id/${user_id}/project/${project.id}`);
+          navigate(`/profile/${user_id}`);
         } else {
+          console.log("response = " + response);
+
           Swal.fire({
             title: "Project is not added",
             icon: "info",

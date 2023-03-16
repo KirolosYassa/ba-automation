@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
-import { Link, useParams, route } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 function Myprofile() {
@@ -23,7 +23,7 @@ function Myprofile() {
         // console.log(projectsIds);
         for (const key in projectsIds) {
           if (projectsIds.hasOwnProperty.call(projectsIds, key)) {
-            const element = projectsIds[key];
+            // const element = projectsIds[key];
             console.log(key);
             // console.log(element);
           }

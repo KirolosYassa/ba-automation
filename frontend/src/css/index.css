@@ -490,4 +490,11 @@ td h1 {
   height: 50px;
   padding-left: 10%;
   padding-right: 10%;
+}
+
+.progressBar {
+  width: 50%;
+  margin: auto;
+  -webkit-margin-before: 1rem;
+          margin-block-start: 1rem;
 }/*# sourceMappingURL=index.css.map */

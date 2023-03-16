@@ -1,8 +1,8 @@
 import "../css/index.css";
-import { useEffect, useState, Component } from "react";
+import { useState } from "react";
 import Header from "../Components/Header";
-import { Link } from "react-router-dom";
-import axios from "axios";
+// import { Link } from "react-router-dom";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import {
@@ -26,7 +26,7 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
-  const { email, password } = user;
+  // const { email, password } = user;
 
   function onChange(e) {
     setUser((prevState) => ({
@@ -69,8 +69,8 @@ function Login() {
         icon: "error",
       }).then();
 
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
       console.log(error);
     }
   }
@@ -128,7 +128,7 @@ function Login() {
       </form>
       <p className="forgot-password text-right">
         {/* isa lw fe wa2t hb2a a3ml reset  password page form */}
-        <a href="#" onClick={changePassword}>
+        <a href=" " onClick={changePassword}>
           Forgot password?
         </a>
       </p>
