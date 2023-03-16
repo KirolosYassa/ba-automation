@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import v4 from "../id_generator";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { btoa } from "base64-js";
 
 import {
   storage,
@@ -125,7 +126,10 @@ function SingleProject() {
           console.log(`${file_uploaded.name} Downloaded`);
           // download url
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            file_uploaded.url_reference = url;
+            file_uploaded["url_reference"] = url;
+            file_uploaded["url_reference"] = encodeURIComponent(
+              file_uploaded["url_reference"]
+            );
             console.log(url);
             axios
               .post(
@@ -286,23 +290,25 @@ function SingleProject() {
         <table
           id="example"
           className="table table-striped"
-          style={{ width: "90%" }}
+          style={{ width: "100%" }}
         >
           <thead>
             <tr>
-              <th>Type</th>
+              <th style={{ width: "20%" }}>Type</th>
               <th>Name</th>
               <th>Size</th>
               <th># of pages</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {uploadedFiles.map((uploadedFile, key) => {
               return (
                 <tr key={key}>
-                  <td>{uploadedFile.type}</td>
+                  <td style={{ width: "20%" }}>{uploadedFile.type}</td>
                   <td>
-                    <a href={uploadedFile.url_reference}>
+                    <a target="_blank" href={uploadedFile.url_reference}>
                       {" "}
                       {uploadedFile.name}
                     </a>
@@ -311,6 +317,24 @@ function SingleProject() {
                     {(parseFloat(uploadedFile.size) / 1024).toFixed(2)} KB
                   </td>
                   <td>###</td>
+                  <td>
+                    <a
+                      className="btn btn-info"
+                      target="_blank"
+                      href={uploadedFile.url_reference}
+                    >
+                      open
+                    </a>
+                  </td>
+                  <td disabled="disabled">
+                    <button
+                      className="btn btn-danger"
+                      target="_blank"
+                      href={uploadedFile.url_reference}
+                    >
+                      delete file
+                    </button>
+                  </td>
                 </tr>
               );
             })}
