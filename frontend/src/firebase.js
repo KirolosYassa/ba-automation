@@ -1,5 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat/app";
+
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -12,6 +14,7 @@ import {
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  deleteObject,
 } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -29,7 +32,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
@@ -44,6 +47,7 @@ export {
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  deleteObject,
 };
 // export const auth = getAuth(app);
 export default app;

@@ -8,14 +8,64 @@ import v4 from "../id_generator";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { btoa } from "base64-js";
 
+// SWAL with Three buttons for loading
+// Swal.fire({
+//   title: 'Do you want to save the changes?',
+//   showDenyButton: true,
+//   showCancelButton: true,
+//   confirmButtonText: 'Save',
+//   denyButtonText: `Don't save`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     Swal.fire('Saved!', '', 'success')
+//   } else if (result.isDenied) {
+//     Swal.fire('Changes are not saved', '', 'info')
+//   }
+// })
+
+// SWAL For cheking deleting the file or not
+// Swal.fire({
+//   title: 'Are you sure?',
+//   text: "You won't be able to revert this!",
+//   icon: 'warning',
+//   showCancelButton: true,
+//   confirmButtonColor: '#3085d6',
+//   cancelButtonColor: '#d33',
+//   confirmButtonText: 'Yes, delete it!'
+// }).then((result) => {
+//   if (result.isConfirmed) {
+//     Swal.fire(
+//       'Deleted!',
+//       'Your file has been deleted.',
+//       'success'
+//     )
+//   }
+// })
+
+// Keep track of deleting the file at the top right of the page
+// Swal.fire({
+//   position: "top-right",
+//   icon: "success",
+//   title: "Your work has been saved",
+//   showConfirmButton: false,
+//   timer: 1500
+// });
 import {
   storage,
   ref,
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  deleteObject,
 } from "../firebase";
 
+// window.addEventListener("beforeunload", function (e) {
+//   var confirmationMessage = "o/";
+
+//   e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
+//   return confirmationMessage; // Gecko, WebKit, Chrome <34
+// });
 var root_ref = "";
 var files_ref = "";
 function SingleProject() {
@@ -46,11 +96,59 @@ function SingleProject() {
     }).then((result) => {
       console.log(result);
       if (result.isDenied) {
+        console.log(`user_id = ${user_id}`);
+        console.log(`project.user_name = ${project.user_name}`);
+        console.log(`project_id = ${project_id}`);
+        console.log(`project.name = ${project.name}`);
         axios
           .delete(
-            `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}`
+            // `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}&root_reference=${root_ref}`
+            // `http://localhost:8000/single_project?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}project_name=${project.name}&`,
+            `http://localhost:8000/single_project/`,
+            {
+              data: {
+                user_id: user_id,
+                // user_name: project.user_name,
+                project_id: project_id,
+                // project_name: project.name,
+              },
+            }
           )
           .then((data) => {
+            // Delete the project from firebase storage
+            console.log(`reference = ${reference}`);
+            const storageRef = ref(storage, reference + "/files");
+
+            listAll(storageRef)
+              .then((res) => {
+                res.prefixes.forEach((folderRef) => {
+                  // All the prefixes under listRef.
+                  // You may call listAll() recursively on them.
+                  console.log(folderRef);
+                });
+                res.items.forEach((itemRef) => {
+                  // All the items under listRef.
+                  console.log(itemRef);
+
+                  // Delete the file
+                  deleteObject(itemRef)
+                    .then(() => {
+                      // File deleted successfully
+                      console.log(`${itemRef.name} deleted successfully`);
+                    })
+                    .catch((error) => {
+                      // Uh-oh, an error occurred!
+                      console.log(`error in deleting the file .. {error}`);
+                    });
+                });
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
+
+            // uploadedFiles.forEach((file) => {
+            //   console.log(file);
+            // });
             console.log(data);
             Swal.fire({
               title: "Project Deleted!",
@@ -63,6 +161,90 @@ function SingleProject() {
       } else {
         Swal.fire({
           title: "Project is not deleted.",
+          icon: "info",
+        });
+      }
+    });
+  };
+
+  const deleteFile = (e) => {
+    console.log(e.target.value);
+    let file_name = e.target.value;
+    Swal.fire({
+      title: "Do you want to delete the Project?",
+      icon: "warning",
+      showDenyButton: true,
+      denyButtonText: "DELETE",
+      showCancelButton: true,
+      showConfirmButton: false,
+    }).then((result) => {
+      console.log(result);
+      if (result.isDenied) {
+        console.log(`user_id = ${user_id}`);
+        console.log(`project.user_name = ${project.user_name}`);
+        console.log(`project_id = ${project_id}`);
+        console.log(`project.name = ${project.name}`);
+        console.log(`file_name = ${file_name}`);
+        axios
+          .delete(`http://localhost:8000/single_file/`, {
+            data: {
+              user_id: user_id,
+              project_id: project_id,
+              file_name: file_name,
+            },
+          })
+          .then((data) => {
+            // Delete the project from firebase storage
+            console.log(`reference = ${reference}`);
+            const storageRef = ref(storage, reference + "/files");
+
+            listAll(storageRef)
+              .then((res) => {
+                res.prefixes.forEach((folderRef) => {
+                  // All the prefixes under listRef.
+                  // You may call listAll() recursively on them.
+                  console.log(folderRef);
+                });
+
+                res.items.forEach((itemRef) => {
+                  // All the items under listRef.
+                  console.log(itemRef);
+                  if (itemRef.name.includes(file_name)) {
+                    // Delete the file
+                    deleteObject(itemRef)
+                      .then(() => {
+                        // File deleted successfully
+                        console.log(`${itemRef.name} deleted successfully`);
+                      })
+                      .catch((error) => {
+                        // Uh-oh, an error occurred!
+                        console.log(`error in deleting the file .. {error}`);
+                      });
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
+            console.log(data);
+            Swal.fire({
+              title: "File Deleted!",
+              icon: "success",
+            });
+          })
+          .then(() => {
+            Swal.fire({
+              title: "File Deleted!",
+              icon: "success",
+            });
+          })
+          .then(() => {
+            // navigate(`/profile/${user_id}`);
+          });
+      } else {
+        Swal.fire({
+          title: "File is not deleted.",
           icon: "info",
         });
       }
@@ -208,6 +390,7 @@ function SingleProject() {
         setProject(project_data);
         console.log("get Single Project axios data have come");
         console.log(`project_name = ${project.name}`);
+        console.log(`project_name = ${project.user_name}`);
         // listAll(files_ref).then((response) => [
         //   response.items.forEach((item) => {
         //     console.log(`item = ${item}`);
@@ -330,7 +513,9 @@ function SingleProject() {
                     <button
                       className="btn btn-danger"
                       target="_blank"
+                      value={uploadedFile.name}
                       href={uploadedFile.url_reference}
+                      onClick={deleteFile}
                     >
                       delete file
                     </button>

@@ -17,7 +17,7 @@ function Myprofile() {
     axios
       .get(`http://localhost:8000/projects?user_id=${user_id}`)
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         // console.log(data.data.data);
         var projectsIds = data.data.data;
         // console.log(projectsIds);
