@@ -509,7 +509,7 @@ function SingleProject() {
                       open
                     </a>
                   </td>
-                  <td disabled="disabled">
+                  {/* <td disabled="disabled">
                     <button
                       className="btn btn-danger"
                       target="_blank"
@@ -519,7 +519,7 @@ function SingleProject() {
                     >
                       delete file
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               );
             })}
