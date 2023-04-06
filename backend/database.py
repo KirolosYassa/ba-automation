@@ -1,9 +1,6 @@
 import os
 import firebase_admin
 from firebase_admin import credentials, storage, firestore, auth
-# import pyrebase
-# from pyrebase.pyrebase import storage 
-# from google.cloud import storage
 
 
 credential_path = os.path.dirname(__file__) + "/serviceAccountKey.json"
@@ -20,20 +17,50 @@ firestore_client = firestore.client()
 db = firestore.client()
 
 
-def delete_file(deleted_file):
+def delete_single_file(deleted_file):
     print("Deleting file in database file")
 
     user_id = deleted_file["user_id"]
     project_id = deleted_file["project_id"]
     file_name = deleted_file["file_name"]
     
-    print(f"user id in delete_file database file = {user_id}")
-    print(f"file_name in delete_file database file = {file_name}")
-    print(f"project_id id in delete_file database file = {project_id}")
+    print(f"user id in delete_single_file database file = {user_id}")
+    print(f"file_name in delete_single_file database file = {file_name}")
+    print(f"project_id id in delete_single_file database file = {project_id}")
     
     # Delete the file from Firebase Firestore
-    file_ref = db.collection('users').document(user_id).collection("projects").document(project_id).update({f"files[{file_name}]": firestore.DELETED_FIELD})
     
+
+    file_ref = db.collection('users').document(user_id).collection("projects").document(project_id).update({
+                        f'files.{file_name}.isDeleted': True
+
+                        # 'files': firestore.ArrayRemove([file_name])
+                    })    
+    # project_data_ref = db.collection('users').document(user_id).collection("projects").document(project_id).get()
+    # project_data = project_data_ref.to_dict()
+    # print(f"project_data = {project_data}")
+    # # for key, value in project_data.items():
+    # #     if key == file_name:
+    # #         db.collection('users').document(user_id).collection("projects").document(project_id).update({
+    # #                             f'files[{file_name}]["isDeleted"]': True
+
+    # #                             # 'files': firestore.ArrayRemove([file_name])
+    # #                         })
+    
+    # new_project_data = project_data.copy()
+    # # for key, value in new_project_data["files"].items():
+    # #     if key == file_name:
+    # #         new_project_data["files"][key]["isDeleted"] = True
+    # new_project_data["files"][file_name].update({"isDeleted":True})
+
+    # # new_project_data["files"][file_name]["isDeleted"] = True
+    # file_ref = db.collection('users').document(user_id).collection("projects").document(project_id).set({
+    #                     f'files': new_project_data
+
+    #                     # 'files': firestore.ArrayRemove([file_name])
+    #                 }, merge=True)    
+    # Delete the file from Firebase Firestore
+
     return file_ref
 
 def delete_specific_project(deleted_project):
@@ -125,31 +152,14 @@ def add_file_to_project(file_data):
                                 "size": file_data["file_size"],
                                 "file_reference": file_data["file_reference"],
                                 "url_reference": file_data["url_reference"],
+                                "isDeleted": file_data["isDeleted"],
                                 }
                                 }}
                                 , merge = True )
 
     return file_data["file_reference"]
         
-
-def add_project_to_users(user_id, project_data):
-    user_ref = firestore_client.collection("users").document(user_id)
-    # user_ref.set(project_data)
-    #     # {
-    #     #     "name": "Apple Macbook Pro",
-    #     #     "brand": "Apple",
-    #     # }
-
-    # Specify the subcollection for a laptop document.
-    projects = user_ref.collection("projects")
-
-    # Add documents to the subcollection.
-    attr_ref = projects.document(project_data["name"])
-    attr_ref.set({"name": project_data["name"], "description": project_data["description"]}, { merge: true })
-
-    # We don't need to create the doc ref beforehand if the metadata is not needed.
-    # projects.document("ram").set({"name": "ram", "value": "16", "unit": "GB"})
-    
+   
 def get_user_id(email):
     docs = db.collection("users").where("email", "==", email).get()
     for doc in docs:
@@ -176,10 +186,22 @@ def get_specific_project(user_id, project_id):
             
             if doc.id == project_id:
                 print(f"doc.to_dict() inside database file = {doc.to_dict()}")
-
-                data[doc.id] = doc.to_dict()
-                data[doc.id]["user_name"] = user_name[user_id]["first_name"]
-                data[doc.id]["project_id"] = doc.id
+                project_data = doc.to_dict()
+                name = project_data["name"]
+                print(f"project_data['name'] = {name}")
+                data["name"] = project_data["name"]
+                data["description"] = project_data["description"]
+                data["user_id"] = project_data["user_id"]
+                data["user_name"] = user_name[user_id]["first_name"]
+                data["project_id"] = doc.id
+                new_project_data = {}
+                print(f"PROJECT_DATA IN DATABASE = {project_data}")
+                for key,value in project_data["files"].items():
+                    if project_data["files"][key]["isDeleted"] == False:    
+                        print(f"Adding {key} in new_project_data = {value}")
+                        new_project_data[key] = value
+                print(f"new_project_data = {new_project_data}")
+                data["files"] = new_project_data
                 break
     # print(f"data inside database file = {data}")
     return data
@@ -197,10 +219,3 @@ def add_project_by_user_id(project_data):
     # print(project_ref)
     return "Project Added"
     
-project_data = {
-        "user_id": "fqQRCusgnORUEKRHAqzNOqrM8nh1",
-        "name": "First Project",
-        "description": "hanet 5las aho", 
-    }
-# add_project_by_user_id(project_data)
-

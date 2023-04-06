@@ -179,6 +179,11 @@ function SingleProject() {
       showConfirmButton: false,
     }).then((result) => {
       console.log(result);
+      let deleted_file_data = {
+        user_id: user_id,
+        project_id: project_id,
+        file_name: file_name,
+      };
       if (result.isDenied) {
         console.log(`user_id = ${user_id}`);
         console.log(`project.user_name = ${project.user_name}`);
@@ -187,11 +192,7 @@ function SingleProject() {
         console.log(`file_name = ${file_name}`);
         axios
           .delete(`http://localhost:8000/single_file/`, {
-            data: {
-              user_id: user_id,
-              project_id: project_id,
-              file_name: file_name,
-            },
+            data: deleted_file_data,
           })
           .then((data) => {
             // Delete the project from firebase storage
@@ -356,12 +357,12 @@ function SingleProject() {
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
         let project_data = {
-          name: project_object[project_id].name,
-          description: project_object[project_id].description,
-          project_id: project_object[project_id].project_id,
-          user_id: project_object[project_id].user_id,
-          user_name: project_object[project_id].user_name,
-          files: project_object[project_id].files,
+          name: project_object.name,
+          description: project_object.description,
+          project_id: project_object.project_id,
+          user_id: project_object.user_id,
+          user_name: project_object.user_name,
+          files: project_object.files,
         };
 
         var array_of_files = [];

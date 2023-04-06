@@ -72,7 +72,7 @@ async def delete_file(deleted_file: DeletedFile):
     print(f"user id in delete_file backend = {user_id}")
     print(f"project_id id in delete_file backend = {project_id}")
     print(f"file_name in delete_file backend = {file_name}")
-    data = delete_file(deleted_file)
+    data = delete_single_file(deletedFile_data)
     print(data)
     return {"data": data}
 
@@ -142,7 +142,8 @@ async def post_project(user_id: str, project_id: str, file_name: str, file_type:
         "file_type": file_type,
         "file_size": file_size,
         "file_reference": file_reference,
-        "url_reference": url_reference
+        "url_reference": url_reference,
+        "isDeleted": False,
     }
     data = add_file_to_project(file_data)
     print(f"data inside main file = {data}")
