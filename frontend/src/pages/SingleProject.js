@@ -362,6 +362,7 @@ function SingleProject() {
           user_id: project_object[project_id].user_id,
           user_name: project_object[project_id].user_name,
           files: project_object[project_id].files,
+          diagrams: project_object[project_id].diagrams,
         };
 
         var array_of_files = [];
@@ -370,6 +371,18 @@ function SingleProject() {
         if (files != undefined) {
           for (const [key, value] of Object.entries(files)) {
             console.log(key, value);
+            if (value.has_useCase_diagram == true) {
+              array_of_files.push({
+                name: value.name,
+                type: value.type,
+                size: value.size,
+                reference: value.file_reference,
+                url_reference: value.url_reference,
+                uploaded: true,
+                diagram_url_reference: value.diagram_url_reference,
+              });
+              continue;
+            }
             array_of_files.push({
               name: value.name,
               type: value.type,
@@ -432,6 +445,30 @@ function SingleProject() {
         // ]);
       });
   }
+
+  const generateDiagram = (file_name, file_url_reference) => {
+    console.log(file_name);
+    console.log(file_url_reference);
+
+    axios
+      .post(
+        `http://localhost:8000/generate_use_case_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
+      )
+      .then((data) => {
+        // console.log(data);
+        console.log(`data.data.data = ${data.data.data}`);
+        let project_object = data.data.data;
+        console.log(project_object);
+        // let project_data = {
+        //   name: project_object[project_id].name,
+        //   description: project_object[project_id].description,
+        //   project_id: project_object[project_id].project_id,
+        //   user_id: project_object[project_id].user_id,
+        //   user_name: project_object[project_id].user_name,
+        //   files: project_object[project_id].files,
+        // };
+      });
+  };
 
   useEffect(() => {
     getSingleProject();
@@ -520,6 +557,30 @@ function SingleProject() {
                       delete file
                     </button>
                   </td> */}
+                  <td>
+                    {uploadedFile.diagram_url_reference == null ? (
+                      <button
+                        className="btn btn-dark"
+                        onClick={(event) =>
+                          generateDiagram(
+                            uploadedFile.name,
+                            uploadedFile.url_reference
+                          )
+                        }
+                      >
+                        Generate Use Case Diagram
+                      </button>
+                    ) : (
+                      <button className="btn btn-success">
+                        <a
+                          target="_blank"
+                          href={uploadedFile.diagram_url_reference}
+                        >
+                          {uploadedFile.name} use case diagram
+                        </a>
+                      </button>
+                    )}{" "}
+                  </td>
                 </tr>
               );
             })}
