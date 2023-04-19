@@ -356,7 +356,7 @@ function SingleProject() {
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
         let project_data = {
-          name: project_object[project_id].name,
+          name: project_object[project_id].project_name,
           description: project_object[project_id].description,
           project_id: project_object[project_id].project_id,
           user_id: project_object[project_id].user_id,

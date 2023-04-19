@@ -35,7 +35,7 @@ function Myprofile() {
           if (projectsIds.hasOwnProperty.call(projectsIds, key)) {
             let project = {
               id: key,
-              name: projectsIds[key].name,
+              name: projectsIds[key].project_name,
               description: projectsIds[key].description,
             };
             all_projects.push(project);
