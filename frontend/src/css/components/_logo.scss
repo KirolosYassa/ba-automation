@@ -1,55 +1,53 @@
 .logo-img {
-    border-radius: 100%;
+  border-radius: 100%;
+  width: 3rem;
+
+  @include papa-bear {
+    width: 4rem;
+  }
+
+  @include baby-bear {
+    // border-radius: 100%;
     width: 3rem;
-
-    @include papa-bear {
-        width: 4rem;
-
-    }
-
-    @include baby-bear {
-        // border-radius: 100%;
-        width: 3rem;
-    }
+  }
 }
 
 .logo-title {
-    color: $brown-color;
-    font-size: 1.5rem;
+  color: $brown-color;
+  font-size: 1.5rem;
+  text-align: left;
+  font-family: "Selly Calligraphy", sans-serif;
+
+  @include baby-bear {
+    // color: #303030;
+    font-size: 1.1rem;
     text-align: left;
-    font-family: 'Selly Calligraphy', sans-serif;
-
-    @include baby-bear {
-        // color: #303030;
-        font-size: 1.1rem;
-        text-align: left;
-    }
+  }
 }
-
 .logo-slogan {
-    color: $brown-color;
-    font-size: 1.2rem;
-    opacity: 60%;
-    // padding-top: 0.2rem;
-    // font-family: 'Selly Calligraphy', sans-serif;
+  color: $brown-color;
+  font-size: 5.2rem;
+  opacity: 60%;
+  // padding-top: 0.2rem;
+  // font-family: 'Selly Calligraphy', sans-serif;
 
-    @include baby-bear {
-        font-size: 0.8rem;
-    }
+  @include baby-bear {
+    font-size: 0.8rem;
+  }
 }
 
 td {
-    padding-left: 0.5rem;
-    margin: auto;
-    text-align: left;
+  padding-left: 0.5rem;
+  margin: auto;
+  text-align: left;
 
-    h1 {
-        height: 30px;
-        font-size: 1rem;
+  h1 {
+    height: 30px;
+    font-size: 1rem;
 
-        @include baby-bear {
-            height: 20px;
-            margin-top: auto;
-        }
+    @include baby-bear {
+      height: 20px;
+      margin-top: auto;
     }
+  }
 }

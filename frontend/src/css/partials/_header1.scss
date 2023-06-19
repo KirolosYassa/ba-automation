@@ -1,9 +1,23 @@
 // @import "variables";
 
 /********************************** Navigation Bar **********************************/
-.img-circle{
-    width: 100px;
-    height: 75px;
-    margin-right: 0%;
+.img-circle {
+  text-align: center;
+  margin: auto;
+  height: 75px;
+  margin-right: 0%;
+}
+nav {
+  box-shadow: 5px 3px 40px gray;
+  position: sticky !important;
+}
+.navbar {
+  position: sticky !important;
 }
 
+.navbar p {
+  //   font-family: "Palette Mosaic", cursive;
+  //   font-family: "Patrick Hand", cursive;
+  font-family: "Rock 3D", cursive;
+  text-align: center;
+}

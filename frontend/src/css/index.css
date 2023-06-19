@@ -15,9 +15,6 @@
 
 .App {
   text-align: center;
-  background-image: url("../Assets/bg1.jpg");
-  padding-right: 5%;
-  padding-left: 5%;
 }
 
 h1 {
@@ -130,12 +127,38 @@ p {
 
 /********************************** Navigation Bar **********************************/
 .img-circle {
-  width: 100px;
+  text-align: center;
+  margin: auto;
   height: 75px;
   margin-right: 0%;
 }
 
+nav {
+  box-shadow: 5px 3px 40px gray;
+  position: sticky !important;
+}
+
+.navbar {
+  position: sticky !important;
+}
+
+.navbar p {
+  font-family: "Rock 3D", cursive;
+  text-align: center;
+}
+
 /********************************** Footer **********************************/
+footer {
+  background-color: #303030;
+  color: #f6f6f6 !important;
+  text-align: center;
+  padding: 30px 10px 10px;
+}
+
+.Sec1 {
+  color: #f6f6f6 !important;
+}
+
 .btn {
   color: #c3dd94;
   border: 3px solid #604118;
@@ -258,6 +281,10 @@ p {
   margin: auto auto 1rem auto;
 }
 
+.rounded {
+  width: 100%;
+}
+
 .logo-img {
   border-radius: 100%;
   width: 3rem;
@@ -288,7 +315,7 @@ p {
 
 .logo-slogan {
   color: #604118;
-  font-size: 1.2rem;
+  font-size: 5.2rem;
   opacity: 60%;
 }
 @media (max-width: 600px) {
@@ -317,6 +344,10 @@ td h1 {
   font-size: 1.8rem;
   width: 100%;
   margin: 2rem auto;
+}
+
+.mt-3 {
+  color: #303030;
 }
 
 .o-dot {
@@ -479,6 +510,24 @@ td h1 {
 .carousel-control-next-icon {
   border-radius: 50%;
   background-color: gray;
+}
+
+.home-paragraph {
+  width: 50%;
+  font-weight: 500;
+  opacity: 80%;
+  font-size: 1.2rem;
+  padding: 1rem;
+  margin: auto;
+  text-align: center;
+}
+
+.line-separated {
+  width: 10%;
+  border: 10px dotted;
+  border-style: none none dotted;
+  color: grey;
+  margin: 1.5rem auto;
 }
 
 .centering {
