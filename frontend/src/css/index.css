@@ -546,4 +546,12 @@ td h1 {
   margin: auto;
   -webkit-margin-before: 1rem;
           margin-block-start: 1rem;
+}
+
+.btn a {
+  color: black;
+}
+
+.btn a:hover {
+  color: white;
 }/*# sourceMappingURL=index.css.map */
