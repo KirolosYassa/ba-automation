@@ -142,35 +142,7 @@ function SingleProject() {
               // Delete the project from firebase storage
               console.log(`reference = ${reference}`);
               const storageRef = ref(storage, reference + "/files");
-
-              // listAll(storageRef)
-              //   .then((res) => {
-              //     res.prefixes.forEach((folderRef) => {
-              //       // All the prefixes under listRef.
-              //       // You may call listAll() recursively on them.
-              //       console.log(folderRef);
-              //     });
-
-              //     res.items.forEach((itemRef) => {
-              //       // All the items under listRef.
-              //       console.log(itemRef);
-              //       if (itemRef.name.includes(file_name)) {
-              //         // Delete the file
-              //         deleteObject(itemRef)
-              //           .then(() => {
-              //             // File deleted successfully
-              //             console.log(`${itemRef.name} deleted successfully`);
-              //           })
-              //           .catch((error) => {
-              //             // Uh-oh, an error occurred!
-              //             console.log(`error in deleting the file .. {error}`);
-              //           });
-              //       }
-              //     });
-              //   })
-              //   .catch((error) => {
-              //     console.log(error);
-              //   });
+              // List all for deleting that single file in firebase database
 
               console.log(data);
               Swal.fire({
@@ -350,9 +322,11 @@ function SingleProject() {
       });
   }
 
-  const generateDiagram = (file_name, file_url_reference) => {
+  const generateUseCaseDiagram = (file_name, file_url_reference) => {
     console.log(file_name);
-    console.log(file_url_reference);
+    console.log(`file_url_reference BEFORE ENCODING = ${file_url_reference}`);
+    file_url_reference = encodeURIComponent(file_url_reference);
+    console.log(`file_url_reference AFTER ENCODING = ${file_url_reference}`);
 
     axios
       .post(
@@ -374,9 +348,40 @@ function SingleProject() {
       });
   };
 
+  const generateClassDiagram = (file_name, file_url_reference) => {
+    console.log(file_name);
+    console.log(file_url_reference);
+
+    axios
+      .post(
+        `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
+      )
+      .then((data) => {
+        // console.log(data);
+        console.log(`data.data.data = ${data.data.data}`);
+        let project_object = data.data.data;
+        console.log(project_object);
+        // let project_data = {
+        //   name: project_object[project_id].name,
+        //   description: project_object[project_id].description,
+        //   project_id: project_object[project_id].project_id,
+        //   user_id: project_object[project_id].user_id,
+        //   user_name: project_object[project_id].user_name,
+        //   files: project_object[project_id].files,
+        // };
+      });
+  };
+
   useEffect(() => {
     getSingleProject();
   }, []);
+
+  const logUseCaseTrue = () => {
+    console.log("use case true");
+  };
+  const logUseCaseFalse = () => {
+    console.log("use case false");
+  };
   return (
     <>
       <HeaderSignedIn />
@@ -461,12 +466,22 @@ function SingleProject() {
                       delete file
                     </button>
                   </td>
+                  {/* For use case diagram */}
                   <td>
-                    {uploadedFile.diagram_url_reference == null ? (
+                    {uploadedFile.has_useCase_diagram ? (
+                      <button className="btn btn-success">
+                        <a
+                          target="_blank"
+                          href={uploadedFile.usecase_diagram_url_reference}
+                        >
+                          {uploadedFile.name} use case diagram
+                        </a>
+                      </button>
+                    ) : (
                       <button
                         className="btn btn-dark"
                         onClick={(event) =>
-                          generateDiagram(
+                          generateUseCaseDiagram(
                             uploadedFile.name,
                             uploadedFile.url_reference
                           )
@@ -474,16 +489,34 @@ function SingleProject() {
                       >
                         Generate Use Case Diagram
                       </button>
-                    ) : (
+                    )}
+                  </td>
+
+                  {/* For Class diagram */}
+
+                  <td>
+                    {uploadedFile.has_class_diagram ? (
                       <button className="btn btn-success">
                         <a
                           target="_blank"
-                          href={uploadedFile.diagram_url_reference}
+                          href={uploadedFile.class_diagram_url_reference}
                         >
-                          {uploadedFile.name} use case diagram
+                          {uploadedFile.name} class diagram
                         </a>
                       </button>
-                    )}{" "}
+                    ) : (
+                      <button
+                        className="btn btn-dark"
+                        onClick={(event) =>
+                          generateClassDiagram(
+                            uploadedFile.name,
+                            uploadedFile.url_reference
+                          )
+                        }
+                      >
+                        Generate Class Diagram
+                      </button>
+                    )}
                   </td>
                 </tr>
               );
