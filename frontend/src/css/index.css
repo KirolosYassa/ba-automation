@@ -554,4 +554,44 @@ td h1 {
 
 .btn a:hover {
   color: white;
+}
+
+.fileBox {
+  width: auto;
+  padding: 3rem;
+}
+
+.fileName {
+  text-align: left;
+}
+
+.fileBox .container {
+  padding: 0;
+  margin: 0;
+}
+@media (min-width: 1200px) {
+  .fileBox .container {
+    width: 1120px;
+  }
+}
+
+.fileBox .navbar-brand {
+  margin-left: auto;
+}
+
+.fileBox button {
+  border: 0;
+  background-color: transparent;
+}
+
+.fileShown {
+  text-align: left;
+  padding: 1rem;
+  border: 1px solid black;
+  width: auto;
+}
+@media (min-width: 1200px) {
+  .fileShown {
+    width: 1120px;
+  }
 }/*# sourceMappingURL=index.css.map */

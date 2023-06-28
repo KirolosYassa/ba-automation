@@ -10,10 +10,10 @@ import {
 import {
   getStorage,
   ref,
-  uploadBytes,
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  uploadBytes,
   deleteObject,
 } from "firebase/storage";
 
@@ -43,10 +43,10 @@ export {
   sendPasswordResetEmail,
   storage,
   ref,
-  uploadBytes,
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  uploadBytes,
   deleteObject,
 };
 // export const auth = getAuth(app);

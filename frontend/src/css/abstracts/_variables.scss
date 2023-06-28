@@ -17,13 +17,14 @@ $offerImageSize: 110%;
 $border-curly: 150px;
 $border-semi-curly: 20px;
 
+$max-width-fileBox: 1120px;
+
 $breakpoints: (
-    "nano-bear": "max-width: 400px",
-    
-    "baby-bear": "max-width: 600px",
-    
-    "mama-bear": "max-width: 900px",
-    
-    "papa-bear": "min-width: 1200px",
-    
+  "nano-bear": "max-width: 400px",
+
+  "baby-bear": "max-width: 600px",
+
+  "mama-bear": "max-width: 900px",
+
+  "papa-bear": "min-width: 1200px",
 );
