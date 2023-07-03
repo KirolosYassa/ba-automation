@@ -15,9 +15,6 @@
 
 .App {
   text-align: center;
-  background-image: url("../Assets/bg1.jpg");
-  padding-right: 5%;
-  padding-left: 5%;
 }
 
 h1 {
@@ -130,12 +127,38 @@ p {
 
 /********************************** Navigation Bar **********************************/
 .img-circle {
-  width: 100px;
+  text-align: center;
+  margin: auto;
   height: 75px;
   margin-right: 0%;
 }
 
+nav {
+  box-shadow: 5px 3px 40px gray;
+  position: sticky !important;
+}
+
+.navbar {
+  position: sticky !important;
+}
+
+.navbar p {
+  font-family: "Rock 3D", cursive;
+  text-align: center;
+}
+
 /********************************** Footer **********************************/
+footer {
+  background-color: #303030;
+  color: #f6f6f6 !important;
+  text-align: center;
+  padding: 30px 10px 10px;
+}
+
+.Sec1 {
+  color: #f6f6f6 !important;
+}
+
 .btn {
   color: #c3dd94;
   border: 3px solid #604118;
@@ -258,8 +281,8 @@ p {
   margin: auto auto 1rem auto;
 }
 
-.generated-link {
-  color: "black";
+.rounded {
+  width: 100%;
 }
 
 .logo-img {
@@ -292,7 +315,7 @@ p {
 
 .logo-slogan {
   color: #604118;
-  font-size: 1.2rem;
+  font-size: 5.2rem;
   opacity: 60%;
 }
 @media (max-width: 600px) {
@@ -321,6 +344,10 @@ td h1 {
   font-size: 1.8rem;
   width: 100%;
   margin: 2rem auto;
+}
+
+.mt-3 {
+  color: #303030;
 }
 
 .o-dot {
@@ -485,6 +512,24 @@ td h1 {
   background-color: gray;
 }
 
+.home-paragraph {
+  width: 50%;
+  font-weight: 500;
+  opacity: 80%;
+  font-size: 1.2rem;
+  padding: 1rem;
+  margin: auto;
+  text-align: center;
+}
+
+.line-separated {
+  width: 10%;
+  border: 10px dotted;
+  border-style: none none dotted;
+  color: grey;
+  margin: 1.5rem auto;
+}
+
 .centering {
   max-width: 550px;
   margin: auto;
@@ -501,4 +546,52 @@ td h1 {
   margin: auto;
   -webkit-margin-before: 1rem;
           margin-block-start: 1rem;
+}
+
+.btn a {
+  color: black;
+}
+
+.btn a:hover {
+  color: white;
+}
+
+.fileBox {
+  width: auto;
+  padding: 3rem;
+}
+
+.fileName {
+  text-align: left;
+}
+
+.fileBox .container {
+  padding: 0;
+  margin: 0;
+}
+@media (min-width: 1200px) {
+  .fileBox .container {
+    width: 1120px;
+  }
+}
+
+.fileBox .navbar-brand {
+  margin-left: auto;
+}
+
+.fileBox button {
+  border: 0;
+  background-color: transparent;
+}
+
+.fileShown {
+  text-align: left;
+  padding: 1rem;
+  border: 1px solid black;
+  width: auto;
+}
+@media (min-width: 1200px) {
+  .fileShown {
+    width: 1120px;
+  }
 }/*# sourceMappingURL=index.css.map */

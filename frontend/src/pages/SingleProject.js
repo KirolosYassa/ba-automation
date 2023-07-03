@@ -7,65 +7,19 @@ import Swal from "sweetalert2";
 import v4 from "../id_generator";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { btoa } from "base64-js";
+import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
+import TextEditor from "../Components/uploaded File.js/textEditor";
 
-// SWAL with Three buttons for loading
-// Swal.fire({
-//   title: 'Do you want to save the changes?',
-//   showDenyButton: true,
-//   showCancelButton: true,
-//   confirmButtonText: 'Save',
-//   denyButtonText: `Don't save`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     Swal.fire('Saved!', '', 'success')
-//   } else if (result.isDenied) {
-//     Swal.fire('Changes are not saved', '', 'info')
-//   }
-// })
-
-// SWAL For cheking deleting the file or not
-// Swal.fire({
-//   title: 'Are you sure?',
-//   text: "You won't be able to revert this!",
-//   icon: 'warning',
-//   showCancelButton: true,
-//   confirmButtonColor: '#3085d6',
-//   cancelButtonColor: '#d33',
-//   confirmButtonText: 'Yes, delete it!'
-// }).then((result) => {
-//   if (result.isConfirmed) {
-//     Swal.fire(
-//       'Deleted!',
-//       'Your file has been deleted.',
-//       'success'
-//     )
-//   }
-// })
-
-// Keep track of deleting the file at the top right of the page
-// Swal.fire({
-//   position: "top-right",
-//   icon: "success",
-//   title: "Your work has been saved",
-//   showConfirmButton: false,
-//   timer: 1500
-// });
 import {
   storage,
   ref,
   listAll,
   getDownloadURL,
   uploadBytesResumable,
+  uploadBytes,
   deleteObject,
 } from "../firebase";
 
-// window.addEventListener("beforeunload", function (e) {
-//   var confirmationMessage = "o/";
-
-//   e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
-//   return confirmationMessage; // Gecko, WebKit, Chrome <34
-// });
 var root_ref = "";
 var files_ref = "";
 function SingleProject() {
@@ -78,13 +32,14 @@ function SingleProject() {
   });
 
   const { user_id, project_id } = useParams();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  // const [uploadedFiles, setUploadedFiles] = useState([]);
   const [reference, setReference] = useState("");
   const [currentFile, setCurrentFile] = useState({
     percent: 0,
     file_name: "",
   });
   const navigate = useNavigate();
+
   const deleteProject = () => {
     Swal.fire({
       title: "Do you want to delete the Project?",
@@ -101,19 +56,12 @@ function SingleProject() {
         console.log(`project_id = ${project_id}`);
         console.log(`project.name = ${project.name}`);
         axios
-          .delete(
-            // `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}&root_reference=${root_ref}`
-            // `http://localhost:8000/single_project?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}project_name=${project.name}&`,
-            `http://localhost:8000/single_project/`,
-            {
-              data: {
-                user_id: user_id,
-                // user_name: project.user_name,
-                project_id: project_id,
-                // project_name: project.name,
-              },
-            }
-          )
+          .delete(`http://localhost:8000/single_project/`, {
+            data: {
+              user_id: user_id,
+              project_id: project_id,
+            },
+          })
           .then((data) => {
             // Delete the project from firebase storage
             console.log(`reference = ${reference}`);
@@ -170,118 +118,100 @@ function SingleProject() {
   const deleteFile = (e) => {
     console.log(e.target.value);
     let file_name = e.target.value;
-    Swal.fire({
-      title: "Do you want to delete the Project?",
-      icon: "warning",
-      showDenyButton: true,
-      denyButtonText: "DELETE",
-      showCancelButton: true,
-      showConfirmButton: false,
-    }).then((result) => {
-      console.log(result);
-      if (result.isDenied) {
-        console.log(`user_id = ${user_id}`);
-        console.log(`project.user_name = ${project.user_name}`);
-        console.log(`project_id = ${project_id}`);
-        console.log(`project.name = ${project.name}`);
-        console.log(`file_name = ${file_name}`);
-        axios
-          .delete(`http://localhost:8000/single_file/`, {
-            data: {
-              user_id: user_id,
-              project_id: project_id,
-              file_name: file_name,
-            },
-          })
-          .then((data) => {
-            // Delete the project from firebase storage
-            console.log(`reference = ${reference}`);
-            const storageRef = ref(storage, reference + "/files");
+    try {
+      Swal.fire({
+        title: `Do you want to delete ${file_name} File?`,
+        icon: "warning",
+        showDenyButton: true,
+        denyButtonText: "DELETE",
+        showCancelButton: true,
+        showConfirmButton: false,
+      }).then((result) => {
+        console.log(result);
+        if (result.isDenied) {
+          console.log(`user_id = ${user_id}`);
+          console.log(`project.user_name = ${project.user_name}`);
+          console.log(`project_id = ${project_id}`);
+          console.log(`project.name = ${project.name}`);
+          console.log(`file_name = ${file_name}`);
+          axios
+            .delete(`http://localhost:8000/single_file/`, {
+              data: {
+                user_id: user_id,
+                project_id: project_id,
+                file_name: file_name,
+              },
+            })
+            .then((data) => {
+              // Delete the project from firebase storage
+              console.log(`reference = ${reference}`);
+              const storageRef = ref(storage, reference + "/files");
+              // List all for deleting that single file in firebase database
 
-            listAll(storageRef)
-              .then((res) => {
-                res.prefixes.forEach((folderRef) => {
-                  // All the prefixes under listRef.
-                  // You may call listAll() recursively on them.
-                  console.log(folderRef);
-                });
-
-                res.items.forEach((itemRef) => {
-                  // All the items under listRef.
-                  console.log(itemRef);
-                  if (itemRef.name.includes(file_name)) {
-                    // Delete the file
-                    deleteObject(itemRef)
-                      .then(() => {
-                        // File deleted successfully
-                        console.log(`${itemRef.name} deleted successfully`);
-                      })
-                      .catch((error) => {
-                        // Uh-oh, an error occurred!
-                        console.log(`error in deleting the file .. {error}`);
-                      });
-                  }
-                });
-              })
-              .catch((error) => {
-                console.log(error);
+              console.log(data);
+              Swal.fire({
+                title: "File Deleted!",
+                icon: "success",
               });
-
-            console.log(data);
-            Swal.fire({
-              title: "File Deleted!",
-              icon: "success",
-            });
-          })
-          .then(() => {
-            Swal.fire({
-              title: "File Deleted!",
-              icon: "success",
-            });
-          })
-          .then(() => {
-            // navigate(`/profile/${user_id}`);
+            })
+            .then(() => {});
+          // navigate(`/profile/user_id/${user_id}/project/${project_id}`);
+        } else {
+          Swal.fire({
+            title: "File is not deleted.",
+            icon: "info",
           });
-      } else {
-        Swal.fire({
-          title: "File is not deleted.",
-          icon: "info",
-        });
-      }
-    });
+        }
+      });
+    } catch (error) {
+    } finally {
+      navigate(`/profile/user_id/${user_id}/project/${project_id}`);
+    }
   };
 
-  const handleUploadFiles = (files) => {
-    const uploaded = [...uploadedFiles];
-    files.some((uploadedFile) => {
-      if (uploaded.findIndex((f) => f.name === uploadedFile.name) === -1) {
-        // if (uploaded.findIndex((f) => f.uploaded != true) === -1) {
-        uploaded.push(uploadedFile);
-        // }
-      } else {
-        return;
-      }
-    });
-    setUploadedFiles(uploaded);
-  };
+  // const handleUploadFiles = (files) => {
+  //   const uploaded = [...uploadedFiles];
+  //   files.some((uploadedFile) => {
+  //     if (uploaded.findIndex((f) => f.name === uploadedFile.name) === -1) {
+  //       // if (uploaded.findIndex((f) => f.uploaded != true) === -1) {
+  //       uploaded.push(uploadedFile);
+  //       // }
+  //     } else {
+  //       return;
+  //     }
+  //   });
+  //   setUploadedFiles(uploaded);
+  // };
 
-  const handleFileEvent = (e) => {
-    const chosenFiles = Array.prototype.slice.call(e.target.files);
-    handleUploadFiles(chosenFiles);
-  };
+  // const handleFileEvent = (e) => {
+  //   const chosenFile = Array.prototype.slice.call(e.target.files);
+  //   handleUploadFiles(chosenFile);
+  // };
 
+  const [file, setFile] = useState();
+
+  function handleChange(event) {
+    setFile(event.target.files[0]);
+  }
   // "users/Kirolos_jxdKLSaFbaa9HO4kANUvN0p93y03/LMS_anaRzP1Z2w0ew0bSfdur/files/comment.txt_626390af-9f14-4bf9-9459-f985677afed6"
   function handle_upload_to_firebase_storage() {
     console.log(`reference = ${reference}`);
-    console.log(`uploadedFiles = ${uploadedFiles}`);
+    // console.log(`uploadedFiles = ${uploadedFiles}`);
     let length_of_uploaded_files = 0;
-    uploadedFiles.forEach((file_uploaded) => {
-      if (file_uploaded.uploaded === true) return;
-      length_of_uploaded_files++;
-      console.log(`file_uploaded.name = ${file_uploaded.name}`);
-      console.log(`file_uploaded.type = ${file_uploaded.type}`);
-      console.log(`file_uploaded.size = ${file_uploaded.size}`);
 
+    // console.log(`file_uploaded.name = ${file_uploaded.name}`);
+    // console.log(`file_uploaded.type = ${file_uploaded.type}`);
+    // console.log(`file_uploaded.size = ${file_uploaded.size}`);
+    let file_uploaded = file;
+    let single_file_reference = `${reference}/files/${
+      file_uploaded.name
+    }_${v4()}`;
+    file_uploaded["file_reference"] = single_file_reference;
+    // axios post req to single_project
+
+    const storageRef = ref(storage, single_file_reference);
+    // 'file' comes from the Blob or File API
+    uploadBytes(storageRef, file).then((snapshot) => {
       let single_file_reference = `${reference}/files/${
         file_uploaded.name
       }_${v4()}`;
@@ -321,6 +251,7 @@ function SingleProject() {
                 console.log(response);
               });
           });
+          // setFile(file);
         }
       );
     });
@@ -343,7 +274,7 @@ function SingleProject() {
         icon: "success",
       });
     }
-    setUploadedFiles([...uploadedFiles]);
+    // setUploadedFiles([...uploadedFiles]);
   }
 
   function getSingleProject() {
@@ -355,8 +286,9 @@ function SingleProject() {
         // console.log(data);
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
+        // console.log(project_object);
         let project_data = {
-          name: project_object[project_id].name,
+          name: project_object[project_id].project_name,
           description: project_object[project_id].description,
           project_id: project_object[project_id].project_id,
           user_id: project_object[project_id].user_id,
@@ -405,8 +337,8 @@ function SingleProject() {
             });
           }
         }
-
-        setUploadedFiles(array_of_files);
+        let file = array_of_files[0];
+        setFile(file);
 
         root_ref = `users/${project_data.user_name}_${project_data.user_id}/${project_data.name}_${project_data.project_id}`;
         setReference(root_ref);
@@ -416,51 +348,14 @@ function SingleProject() {
         console.log("get Single Project axios data have come");
         console.log(`project_name = ${project.name}`);
         console.log(`project_name = ${project.user_name}`);
-        // listAll(files_ref).then((response) => [
-        //   response.items.forEach((item) => {
-        //     console.log(`item = ${item}`);
-        //     getDownloadURL(item).then((url) => {
-        //       console.log(url);
-        //     });
-        //     // getDownloadURL(item).then((url) => {
-        //     //   console.log(url);
-        //     //   // Fetching the url src
-        //     //   fetch(url, {
-        //     //     method: "GET",
-        //     //     mode: "no-cors",
-        //     //     headers: {
-        //     //       "Access-Control-Allow-Origin": "*",
-        //     //       "Content-Type": "application/json",
-        //     //     },
-        //     //     withCredentials: true,
-        //     //   })
-        //     //     .then((res) => res.blob())
-        //     //     .then((blob) => {
-        //     //       console.log(`blob = ${blob}`);
-
-        //     //       const file = new File([blob], "image", { type: blob.type });
-        //     //       console.log(file);
-        //     //       // setUploadedFiles((prev) => [...prev, url]);
-        //     //     });
-        //     //   // axios.get(url).then((res) => {
-        //     //   //   // console.log(res.blob());
-
-        //     //   //   console.log(res);
-        //     //   //   // const file = new File("*", { type: blob.type });
-        //     //   //   // console.log(file);
-        //     //   //   setUploadedFiles((prev) => [...prev, url]);
-        //     //   // });
-        //     //   // .then((blob) => {
-        //     //   // });
-        //     // });
-        //   }),
-        // ]);
       });
   }
 
-  const generateDiagram = (file_name, file_url_reference) => {
+  const generateUseCaseDiagram = (file_name, file_url_reference) => {
     console.log(file_name);
-    console.log(file_url_reference);
+    console.log(`file_url_reference BEFORE ENCODING = ${file_url_reference}`);
+    file_url_reference = encodeURIComponent(file_url_reference);
+    console.log(`file_url_reference AFTER ENCODING = ${file_url_reference}`);
 
     axios
       .post(
@@ -482,23 +377,94 @@ function SingleProject() {
       });
   };
 
+  const generateClassDiagram = (file_name, file_url_reference) => {
+    console.log(file_name);
+    console.log(file_url_reference);
+
+    axios
+      .post(
+        `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
+      )
+      .then((data) => {
+        // console.log(data);
+        console.log(`data.data.data = ${data.data.data}`);
+        let project_object = data.data.data;
+        console.log(project_object);
+        // let project_data = {
+        //   name: project_object[project_id].name,
+        //   description: project_object[project_id].description,
+        //   project_id: project_object[project_id].project_id,
+        //   user_id: project_object[project_id].user_id,
+        //   user_name: project_object[project_id].user_name,
+        //   files: project_object[project_id].files,
+        // };
+      });
+  };
+
   useEffect(() => {
     getSingleProject();
   }, []);
+
+  const logUseCaseTrue = () => {
+    console.log("use case true");
+  };
+  const logUseCaseFalse = () => {
+    console.log("use case false");
+  };
+
+  const [text, setText] = useState();
+
+  const test = (e) => {
+    console.log(e.target.files);
+  };
+
+  let fileReader;
+
+  const onChange = (e) => {
+    handleChange(e);
+    let file = e.target.files;
+    fileReader = new FileReader();
+    fileReader.onloadend = handleFileRead;
+    fileReader.readAsText(file[0]);
+  };
+
+  // const deleteLines = (string, n = 1) => {
+  //   console.log("remove lines");
+  //   return string.replace(new RegExp(`(?:.*?\n){${n - 1}}(?:.*?\n)`), "");
+  // };
+
+  const cleanContent = (string) => {
+    string = string.replace(/^\s*[\r\n]/gm, "");
+    let array = string.split(new RegExp(/[\r\n]/gm));
+    console.log(array);
+    array.splice(0, 3);
+    array.splice(-3);
+    return array.join("\n");
+  };
+
+  const handleFileRead = (e) => {
+    let content = fileReader.result;
+    // let text = deleteLines(content, 3);
+    content = cleanContent(content);
+    // … do something with the 'content' …
+    setText(content);
+  };
+
   return (
     <>
       <HeaderSignedIn />
       {/* {console.log(project)} */}
+
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2>{project.name}</h2>
-      <input
+      {/* <input
         id="fileUpload"
         type="file"
         multiple
         accept="*"
         onChange={handleFileEvent}
-      />
-      {currentFile.percent === 100 &&
+      /> */}
+      {/* {currentFile.percent === 100 &&
         setCurrentFile({
           percent: 0,
           file_name: "",
@@ -514,137 +480,29 @@ function SingleProject() {
           className={`btn btn-primary `}
           onClick={handle_upload_to_firebase_storage}
         >
-          Upload Files
+          Upload File
         </a>
-      </label>
+      </label> */}
 
-      <div className="container">
-        <table
-          id="example"
-          className="table table-striped"
-          style={{ width: "100%" }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: "20%" }}>Type</th>
-              <th>Name</th>
-              <th>Size</th>
-              <th># of pages</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {uploadedFiles.map((uploadedFile, key) => {
-              return (
-                <tr key={key}>
-                  <td style={{ width: "20%" }}>{uploadedFile.type}</td>
-                  <td>
-                    <a target="_blank" href={uploadedFile.url_reference}>
-                      {" "}
-                      {uploadedFile.name}
-                    </a>
-                  </td>
-                  <td>
-                    {(parseFloat(uploadedFile.size) / 1024).toFixed(2)} KB
-                  </td>
-                  <td>###</td>
-                  <td>
-                    <a
-                      className="btn btn-info"
-                      target="_blank"
-                      href={uploadedFile.url_reference}
-                    >
-                      open
-                    </a>
-                  </td>
-                  {/* <td disabled="disabled">
-                    <button
-                      className="btn btn-danger"
-                      target="_blank"
-                      value={uploadedFile.name}
-                      href={uploadedFile.url_reference}
-                      onClick={deleteFile}
-                    >
-                      delete file
-                    </button>
-                  </td> */}
-                  <td>
-                    {uploadedFile.diagram_url_reference == null ? (
-                      <button
-                        className="btn btn-dark"
-                        onClick={(event) =>
-                          generateDiagram(
-                            uploadedFile.name,
-                            uploadedFile.url_reference
-                          )
-                        }
-                      >
-                        Generate Use Case Diagram
-                      </button>
-                    ) : (
-                      <button className="btn btn-success">
-                        <a
-                          target="_blank"
-                          href={uploadedFile.diagram_url_reference}
-                          style={{"color":'black'}}
-
-                        >
-                          <p>
-                            
-                          <b>
-
-                          {uploadedFile.name} use case diagram
-                          </b>
-                          </p>
-                        </a>
-                      </button>
-                    )}{" "}
-                  </td>
-                  <td>
-                    {uploadedFile.diagram_url_reference == null ? (
-                      <button
-                        className="btn btn-dark"
-                        onClick={(event) =>
-                          generateDiagram(
-                            uploadedFile.name,
-                            uploadedFile.url_reference
-                          )
-                        }
-                      >
-                        Generate Class Diagram
-                      </button>
-                    ) : (
-                      <button className="btn btn-success">
-                        <a
-                          target="_blank"
-                          href={uploadedFile.diagram_url_reference}
-                          style={{"color":'black'}}
-                        >
-
-                        <p>
-                            
-                            <b>
-                          {uploadedFile.name} Class diagram
-                          </b>
-                          </p>
-                        </a>
-                      </button>
-                    )}{" "}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Type</th>
-              <th>Name</th>
-              <th>Size</th>
-              <th># of pages</th>
-            </tr>
-          </tfoot>
-        </table>
+      {/* <h3>{uploadedFile.name}</h3> */}
+      <input type="file" name="myfile" onChange={onChange} />
+      <a
+        href="#"
+        className={`btn btn-primary `}
+        onClick={handle_upload_to_firebase_storage}
+      >
+        Upload File
+      </a>
+      <div className="fileBox">
+        <h3 className="fileName">file name</h3>
+        <div class="container">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light ml-auto">
+            <button class="navbar-brand" href="#">
+              Edit
+            </button>
+          </nav>
+        </div>
+        <div className="fileShown">{text && <pre>{text}</pre>}</div>
       </div>
 
       <br />

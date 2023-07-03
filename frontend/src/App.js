@@ -19,6 +19,7 @@ import Myprofile from "./pages/Myprofile";
 import About from "./pages/About";
 import SingleProject from "./pages/SingleProject";
 import Addproject from "./pages/Addproject";
+
 function App() {
   useEffect(() => {
     document.title = "UML generator";

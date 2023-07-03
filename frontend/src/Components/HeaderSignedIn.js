@@ -14,11 +14,15 @@ function HeaderSignedIn() {
 
   return (
     <>
-      <nav className="navbar" style={{ backgroundColor: "tan" }}>
+      <nav className="navbar">
         <div className="container">
           <Link className="navbar-brand" to={`/profile/${user_id}`}>
             <img className="img-circle" alt="M4 mawgoda " src={Image1} />
-            <p>UML generator</p>
+            <p>
+              UML
+              <br />
+              generator
+            </p>
           </Link>
           <button
             className="navbar-toggler"
@@ -33,14 +37,14 @@ function HeaderSignedIn() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link active" to="/">
                   Home
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <Link
-                  className="nav-link"
+                  className="nav-link active"
                   aria-current="page"
                   to={`/profile/${user_id}`}
                 >

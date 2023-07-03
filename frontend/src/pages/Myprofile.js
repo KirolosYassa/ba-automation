@@ -2,10 +2,22 @@ import { useState, useEffect } from "react";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { set_user_id, set_logged_in_user } from "../Redux/user";
 
 function Myprofile() {
   let [projects, setProjects] = useState([]);
   let { user_id } = useParams();
+  // const {
+  //   user_loggedin_id,
+  //   email,
+  //   first_name,
+  //   last_name,
+  //   role,
+  //   user_projects,
+  // } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+
   // const { user_id } = route.params;
 
   // const queryParameters = new URLSearchParams(window.location.search);
@@ -35,7 +47,7 @@ function Myprofile() {
           if (projectsIds.hasOwnProperty.call(projectsIds, key)) {
             let project = {
               id: key,
-              name: projectsIds[key].name,
+              name: projectsIds[key].project_name,
               description: projectsIds[key].description,
             };
             all_projects.push(project);
@@ -53,7 +65,7 @@ function Myprofile() {
   return (
     <>
       <HeaderSignedIn />
-      <h1 className="mt-3">My Projects</h1>
+      <h1 className="mt-3 ">My Projects</h1>
       {/* momken a7ot sidebar fe gamb a7ot fe my projects aw ashof y3ni a7ot fehom eh yemen w shemal */}
       {/* Cards of projects  */}
       <div className="row">
