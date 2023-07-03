@@ -41,7 +41,7 @@ function Footer(){
           <h6 className="text-uppercase fw-bold mb-4">Contact Us</h6>
           <p>
             <i className="fas fa-envelope me-3"></i>
-            ay7aga@example.com
+            ay7aga@example.comay7aga@example.com
           </p>
           <p><i className="fas fa-phone me-3"></i> + 201 234 567 88</p>
           <p><i className="fas fa-print me-3"></i> + 201 234 567 89</p>

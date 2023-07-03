@@ -362,16 +362,27 @@ function SingleProject() {
           user_id: project_object[project_id].user_id,
           user_name: project_object[project_id].user_name,
           files: project_object[project_id].files,
-          diagrams: project_object[project_id].diagrams,
         };
 
         var array_of_files = [];
         let files = project_data.files;
         // console.log(`files = ${files}`);
+        var url_ref = ""
         if (files != undefined) {
           for (const [key, value] of Object.entries(files)) {
             console.log(key, value);
             if (value.has_useCase_diagram == true) {
+              console.log(`value.diagram_file_reference= ${value.diagram_url_reference}`);
+              getDownloadURL(ref(storage, value.diagram_file_reference))
+              .then((url) => {
+                // `url` is the download URL for 'images/stars.jpg'
+                console.log(`url = ${url}`);
+                url_ref = url
+              })
+              .catch((error) => {
+                // Handle any errors
+                console.log("Downloading error...");
+              });
               array_of_files.push({
                 name: value.name,
                 type: value.type,
@@ -379,7 +390,8 @@ function SingleProject() {
                 reference: value.file_reference,
                 url_reference: value.url_reference,
                 uploaded: true,
-                diagram_url_reference: value.diagram_url_reference,
+                diagram_url_reference: url_ref,
+                diagram_file_reference: value.diagram_file_reference,
               });
               continue;
             }
@@ -575,8 +587,47 @@ function SingleProject() {
                         <a
                           target="_blank"
                           href={uploadedFile.diagram_url_reference}
+                          style={{"color":'black'}}
+
                         >
+                          <p>
+                            
+                          <b>
+
                           {uploadedFile.name} use case diagram
+                          </b>
+                          </p>
+                        </a>
+                      </button>
+                    )}{" "}
+                  </td>
+                  <td>
+                    {uploadedFile.diagram_url_reference == null ? (
+                      <button
+                        className="btn btn-dark"
+                        onClick={(event) =>
+                          generateDiagram(
+                            uploadedFile.name,
+                            uploadedFile.url_reference
+                          )
+                        }
+                      >
+                        Generate Class Diagram
+                      </button>
+                    ) : (
+                      <button className="btn btn-success">
+                        <a
+                          target="_blank"
+                          href={uploadedFile.diagram_url_reference}
+                          style={{"color":'black'}}
+                        >
+
+                        <p>
+                            
+                            <b>
+                          {uploadedFile.name} Class diagram
+                          </b>
+                          </p>
                         </a>
                       </button>
                     )}{" "}

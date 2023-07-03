@@ -258,6 +258,10 @@ p {
   margin: auto auto 1rem auto;
 }
 
+.generated-link {
+  color: "black";
+}
+
 .logo-img {
   border-radius: 100%;
   width: 3rem;
