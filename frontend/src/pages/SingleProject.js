@@ -254,17 +254,26 @@ function SingleProject() {
           user_id: project_object[project_id].user_id,
           user_name: project_object[project_id].user_name,
           files: project_object[project_id].files,
-          diagrams: project_object[project_id].diagrams,
         };
 
         var array_of_files = [];
         let files = project_data.files;
-        console.log(`project_data = ${project_data}`);
-        console.log(`files = ${files}`);
+        // console.log(`files = ${files}`);
         if (files != undefined) {
           for (const [key, value] of Object.entries(files)) {
             console.log(key, value);
             if (value.has_useCase_diagram == true) {
+              console.log(`value.diagram_file_reference= ${value.diagram_url_reference}`);
+              getDownloadURL(ref(storage, value.diagram_file_reference))
+              .then((url) => {
+                // `url` is the download URL for 'images/stars.jpg'
+                console.log(`url = ${url}`);
+                url_ref = url
+              })
+              .catch((error) => {
+                // Handle any errors
+                console.log("Downloading error...");
+              });
               array_of_files.push({
                 name: value.name,
                 type: value.type,
@@ -272,7 +281,8 @@ function SingleProject() {
                 reference: value.file_reference,
                 url_reference: value.url_reference,
                 uploaded: true,
-                diagram_url_reference: value.diagram_url_reference,
+                diagram_url_reference: url_ref,
+                diagram_file_reference: value.diagram_file_reference,
               });
               continue;
             }
