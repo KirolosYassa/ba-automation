@@ -281,6 +281,10 @@ footer {
   margin: auto auto 1rem auto;
 }
 
+.generated-link {
+  color: "black";
+}
+
 .rounded {
   width: 100%;
 }
@@ -548,6 +552,19 @@ td h1 {
           margin-block-start: 1rem;
 }
 
+.project-name-title {
+  height: 2rem;
+}
+
+.upload-section {
+  width: 50%;
+  margin: auto !important;
+}
+
+.upload-section * {
+  margin: 1rem;
+}
+
 .btn a {
   color: black;
 }
@@ -581,7 +598,6 @@ td h1 {
 
 .fileBox button {
   border: 0;
-  background-color: transparent;
 }
 
 .fileShown {

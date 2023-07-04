@@ -9,6 +9,19 @@
   margin-block-start: 1rem;
 }
 
+.project-name-title {
+  height: 2rem;
+}
+
+.upload-section {
+  width: 50%;
+  margin: auto !important;
+}
+
+.upload-section * {
+  margin: 1rem;
+}
+
 .btn a {
   color: black;
 }
@@ -27,7 +40,7 @@
 .fileBox .container {
   padding: 0;
   margin: 0;
-
+  
   @include papa-bear {
     width: $max-width-fileBox;
   }
@@ -38,7 +51,6 @@
 
 .fileBox button {
   border: 0;
-  background-color: transparent;
 }
 .fileShown {
   text-align: left;

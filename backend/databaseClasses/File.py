@@ -6,7 +6,7 @@ from database import *
 class File:
     def __init__(
         self,
-        file_name,
+        file_name="",
         file_reference="",
         file_size="",
         file_type="",
@@ -61,25 +61,38 @@ class File:
         )
 
         # Delete the file from Firebase Firestore
-        doc = file_ref.get()
-        files = doc.to_dict().get("files", {})
-        files_copy = files.copy()  # create a copy of the dictionary
-
-        print(f"files = {files}")
-        for key, value in files_copy.items():
-            print(key)
-            print(value)
-            if value["name"] == self.file_name:
-                del files[key]
-
-        # Write the updated array back to the document
-        file_ref.update(
+        # doc = file_ref.get()
+        file_ref.set(
             {
-                "files": files,
+                "files": {},
             },
+            merge=True,
         )
+
+        # files = doc.to_dict().get("files", {})
+        # files_copy = files.copy()  # create a copy of the dictionary
+
+        # print(f"files = {files}")
+        # for key, value in files_copy.items():
+        #     print(key)
+        #     print(value)
+        #     if value["name"] == self.file_name:
+        #         del files[key]
+
+        # # Write the updated array back to the document
+        # file_ref.update(
+        #     {
+        #         "files": {files},
+        #     },
+        # )
         return file_ref
 
     def generate_useCase_diagram_with_file(self):
         # needs user_id & user_name & project_id & project_name & file_url_reference & file_name
         pass
+
+    def get_content_text(self):
+        print(f"self.url_reference = {self.url_reference}")
+        response = requests.get(self.url_reference)
+        print(f"response.text { response.text}")
+        return response.text

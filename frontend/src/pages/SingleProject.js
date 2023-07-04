@@ -38,8 +38,19 @@ function SingleProject() {
     percent: 0,
     file_name: "",
   });
+
+  const [lastfilename, setLastFileName] = useState();
+  const [statefilename, setStateFileName] = useState();
+  const [file, setFile] = useState();
+  const [text, setText] = useState();
+
   const navigate = useNavigate();
 
+  function automate_url(url) {
+    let starting_url = "https://firebasestorage.googleapis.com";
+    let new_url = url.replace(`${starting_url}`, "/api");
+    return new_url;
+  }
   const deleteProject = () => {
     Swal.fire({
       title: "Do you want to delete the Project?",
@@ -116,11 +127,13 @@ function SingleProject() {
   };
 
   const deleteFile = (e) => {
-    console.log(e.target.value);
-    let file_name = e.target.value;
+    // console.log(e.target.value);
+
+    console.log(`file.name = ${file.name}`);
+    let file_name = file.name;
     try {
       Swal.fire({
-        title: `Do you want to delete ${file_name} File?`,
+        title: `Do you want to delete the Last file "${lastfilename}"?`,
         icon: "warning",
         showDenyButton: true,
         denyButtonText: "DELETE",
@@ -145,7 +158,7 @@ function SingleProject() {
             .then((data) => {
               // Delete the project from firebase storage
               console.log(`reference = ${reference}`);
-              const storageRef = ref(storage, reference + "/files");
+              // const storageRef = ref(storage, reference + "/files");
               // List all for deleting that single file in firebase database
 
               console.log(data);
@@ -153,51 +166,49 @@ function SingleProject() {
                 title: "File Deleted!",
                 icon: "success",
               });
+              window.location.reload();
+
+              // return true;
             })
-            .then(() => {});
+            .then(() => {
+              window.location.reload();
+            });
+          window.location.reload();
+
           // navigate(`/profile/user_id/${user_id}/project/${project_id}`);
         } else {
           Swal.fire({
             title: "File is not deleted.",
             icon: "info",
           });
+          return false;
         }
       });
     } catch (error) {
+      return false;
     } finally {
-      navigate(`/profile/user_id/${user_id}/project/${project_id}`);
+      // navigate(`/profile/user_id/${user_id}/project/${project_id}`);
     }
   };
 
-  const [file, setFile] = useState();
-
   // "users/Kirolos_jxdKLSaFbaa9HO4kANUvN0p93y03/LMS_anaRzP1Z2w0ew0bSfdur/files/comment.txt_626390af-9f14-4bf9-9459-f985677afed6"
   function handle_upload_to_firebase_storage() {
-    console.log(`reference = ${reference}`);
-    // console.log(`uploadedFiles = ${uploadedFiles}`);
-    let length_of_uploaded_files = 0;
+    if (currentFile != undefined) {
+      // if (deleteFile()) {
+      console.log(`reference = ${reference}`);
+      // console.log(`uploadedFiles = ${uploadedFiles}`);
 
-    // console.log(`file_uploaded.name = ${file_uploaded.name}`);
-    // console.log(`file_uploaded.type = ${file_uploaded.type}`);
-    // console.log(`file_uploaded.size = ${file_uploaded.size}`);
-    let file_uploaded = file;
-    let single_file_reference = `${reference}/files/${
-      file_uploaded.name
-    }_${v4()}`;
-    file_uploaded["file_reference"] = single_file_reference;
-    // axios post req to single_project
-
-    const storageRef = ref(storage, single_file_reference);
-    // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, file).then((snapshot) => {
+      console.log(`currentFile = ${currentFile}`);
+      // console.log(`file_uploaded.size = ${file_uploaded.size}`);
+      let file_uploaded = currentFile;
+      console.log(`file_uploaded.name = ${file_uploaded.name}`);
       let single_file_reference = `${reference}/files/${
         file_uploaded.name
       }_${v4()}`;
       file_uploaded["file_reference"] = single_file_reference;
       // axios post req to single_project
-
       const storageRef = ref(storage, single_file_reference);
-      // progress can be paused and resumed. It also exposes progress updates. // Receives the storage reference and the uploadedFiles to upload.
+      // 'file' comes from the Blob or File API
       const uploadTask = uploadBytesResumable(storageRef, file_uploaded);
       uploadTask.on(
         "state_changed",
@@ -220,21 +231,23 @@ function SingleProject() {
             file_uploaded["url_reference"] = encodeURIComponent(
               file_uploaded["url_reference"]
             );
+            setLastFileName(file_uploaded.name);
+
             console.log(url);
             axios
               .post(
                 `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}&file_name=${file_uploaded.name}&file_type=${file_uploaded.type}&file_size=${file_uploaded.size}&file_reference=${single_file_reference}&url_reference=${file_uploaded.url_reference}`
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
+                window.location.reload();
               });
           });
-          // setFile(file);
         }
       );
-    });
+      // }
+    }
   }
-
   function getSingleProject() {
     console.log("getSingleProject is activavted");
     axios
@@ -243,9 +256,9 @@ function SingleProject() {
       )
       .then((data) => {
         // console.log(data);
-        console.log(`data.data.data = ${data.data.data}`);
+        // console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
-        console.log(`project_object = ${project_object}`);
+        // console.log(`project_object = ${project_object}`);
         // console.log(project_object);
         let project_data = {
           name: project_object[project_id].project_name,
@@ -255,6 +268,7 @@ function SingleProject() {
           user_name: project_object[project_id].user_name,
           files: project_object[project_id].files,
         };
+        setProject(project_data);
 
         var array_of_files = [];
         let files = project_data.files;
@@ -263,17 +277,20 @@ function SingleProject() {
           for (const [key, value] of Object.entries(files)) {
             console.log(key, value);
             if (value.has_useCase_diagram == true) {
-              console.log(`value.diagram_file_reference= ${value.diagram_url_reference}`);
+              console.log(
+                `value.diagram_file_reference= ${value.diagram_url_reference}`
+              );
+              var url_ref;
               getDownloadURL(ref(storage, value.diagram_file_reference))
-              .then((url) => {
-                // `url` is the download URL for 'images/stars.jpg'
-                console.log(`url = ${url}`);
-                url_ref = url
-              })
-              .catch((error) => {
-                // Handle any errors
-                console.log("Downloading error...");
-              });
+                .then((url) => {
+                  // `url` is the download URL for 'images/stars.jpg'
+                  console.log(`url = ${url}`);
+                  url_ref = url;
+                })
+                .catch((error) => {
+                  // Handle any errors
+                  console.log("Downloading error...");
+                });
               array_of_files.push({
                 name: value.name,
                 type: value.type,
@@ -295,15 +312,19 @@ function SingleProject() {
               uploaded: true,
             });
           }
+          let file_url_reference = array_of_files[0].url_reference;
+          let file = array_of_files[0];
+          setFile(file);
+          setLastFileName(file.name);
+
+          fetch_content(file_url_reference);
         }
-        let file = array_of_files[0];
-        setFile(file);
+        // console.log(`file = ${file.url_reference}`);
 
         root_ref = `users/${project_data.user_name}_${project_data.user_id}/${project_data.name}_${project_data.project_id}`;
         setReference(root_ref);
         console.log(`root_ref = ${root_ref}`);
         files_ref = ref(storage, `${root_ref}/files/`);
-        setProject(project_data);
         console.log("get Single Project axios data have come");
         console.log(`project_name = ${project.name}`);
         console.log(`project_name = ${project.user_name}`);
@@ -349,17 +370,21 @@ function SingleProject() {
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
         console.log(project_object);
-        // let project_data = {
-        //   name: project_object[project_id].name,
-        //   description: project_object[project_id].description,
-        //   project_id: project_object[project_id].project_id,
-        //   user_id: project_object[project_id].user_id,
-        //   user_name: project_object[project_id].user_name,
-        //   files: project_object[project_id].files,
-        // };
       });
   };
-
+  const fetch_content = (url) => {
+    url = encodeURIComponent(url);
+    console.log(`url = ${url}`);
+    axios
+      .get(`http://localhost:8000/text_content?url=${url}`)
+      .then((response) => {
+        // console.log(`response.data: = ${response.data}`);
+        setText(response.data);
+      })
+      .catch((error) => {
+        console.error(`error = ${error}`);
+      });
+  };
   useEffect(() => {
     getSingleProject();
   }, []);
@@ -371,25 +396,29 @@ function SingleProject() {
     console.log("use case false");
   };
 
-  const [text, setText] = useState();
-
-  const test = (e) => {
-    console.log(e.target.files);
-  };
-
   function handleChange(event) {
     console.log(`event.target.files[0] = ${event.target.files}`);
-    setFile(event.target.files[0]);
+    console.log(`event.target.files[0].name = ${event.target.files[0].name}`);
+    setStateFileName(event.target.files[0].name);
+    setCurrentFile(event.target.files[0]);
+    // setFile(event.target.files[0]);
+    console.log(`statefilename: ${statefilename}
+    lastfilename: ${lastfilename}`);
   }
 
   let fileReader;
 
   const onChange = (e) => {
     handleChange(e);
-    let file = e.target.files;
+    let file_selected = e.target.files;
+    onFileRead(file_selected[0]);
+  };
+
+  const onFileRead = (file_selected) => {
+    // console.log(`file_selected = ${file_selected}`);
     fileReader = new FileReader();
     fileReader.onloadend = handleFileRead;
-    fileReader.readAsText(file[0]);
+    fileReader.readAsText(file_selected);
   };
 
   // const deleteLines = (string, n = 1) => {
@@ -400,7 +429,7 @@ function SingleProject() {
   const cleanContent = (string) => {
     string = string.replace(/^\s*[\r\n]/gm, "");
     let array = string.split(new RegExp(/[\r\n]/gm));
-    console.log(array);
+    // console.log(array);
     array.splice(0, 3);
     array.splice(-3);
     return array.join("\n");
@@ -420,27 +449,40 @@ function SingleProject() {
       {/* {console.log(project)} */}
 
       <h1 className="text-left mt-3">Project Name:</h1>
-      <h2>{project.name}</h2>
+      <h2 className="project-name-title">{project.name}</h2>
+      <div className="row upload-section">
+        <input
+          type="file"
+          name="myfile"
+          onChange={onChange}
+          className="col-sm-12 col-lg-6"
+          // accept=".txt .docs"
+        />
+        <a
+          href="#"
+          className={`btn btn-primary col-sm-12 col-lg-6`}
+          onClick={handle_upload_to_firebase_storage}
+        >
+          Upload File
+        </a>
+      </div>
 
-      <input type="file" name="myfile" onChange={onChange} />
-      <a
-        href="#"
-        className={`btn btn-primary `}
-        onClick={handle_upload_to_firebase_storage}
-      >
-        Upload File
-      </a>
       <div className="fileBox">
-        {file != undefined ? (
-          <h3 className="fileName">{file["name"]}</h3>
+        {/* <h3 className="fileName">{lastfile["name"]}</h3> */}
+        {statefilename === lastfilename ? (
+          <h3 className="fileName">{statefilename}</h3>
         ) : (
-          <h3></h3>
+          <h3 className="fileName">{lastfilename}</h3>
         )}
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light bg-light ml-auto">
-            <button class="navbar-brand" href="#">
-              Edit
+            <button class="btn btn-danger" href="#" onClick={deleteFile}>
+              delete file
             </button>
+
+            {/* <button class="" href="#">
+              Edit
+            </button> */}
           </nav>
         </div>
         <div className="fileShown">{text && <pre>{text}</pre>}</div>
