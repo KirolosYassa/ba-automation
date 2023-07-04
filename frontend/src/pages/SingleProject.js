@@ -298,19 +298,13 @@ function SingleProject() {
                 reference: value.file_reference,
                 url_reference: value.url_reference,
                 uploaded: true,
-                diagram_url_reference: url_ref,
+                usecase_diagram_url_reference: url_ref,
                 diagram_file_reference: value.diagram_file_reference,
               });
               continue;
             }
-            array_of_files.push({
-              name: value.name,
-              type: value.type,
-              size: value.size,
-              reference: value.file_reference,
-              url_reference: value.url_reference,
-              uploaded: true,
-            });
+            console.log(`value = ${JSON.stringify(value)}`);
+            array_of_files.push(value);
           }
           let file_url_reference = array_of_files[0].url_reference;
           let file = array_of_files[0];
@@ -479,10 +473,36 @@ function SingleProject() {
             <button class="btn btn-danger" href="#" onClick={deleteFile}>
               delete file
             </button>
-
-            {/* <button class="" href="#">
-              Edit
-            </button> */}
+            {/* USE CASE DIAGRAM */}
+            {file.has_useCase_diagram ? (
+              <button className="btn btn-success">
+                <a target="_blank" href={file.usecase_diagram_url_reference}>
+                  {file.name} Use Case Diagram
+                </a>
+              </button>
+            ) : (
+              <button
+                className="btn btn-dark"
+                onClick={generateUseCaseDiagram(file.name, file.url_reference)}
+              >
+                Generate Use Case Diagram
+              </button>
+            )}
+            {/* CLASS DIAGRAM */}
+            {file.has_Class_diagram ? (
+              <button className="btn btn-success">
+                <a target="_blank" href={file.class_diagram_url_reference}>
+                  {file.name} Class Diagram
+                </a>
+              </button>
+            ) : (
+              <button
+                className="btn btn-dark"
+                onClick={generateClassDiagram(file.name, file.url_reference)}
+              >
+                Generate Class Diagram
+              </button>
+            )}
           </nav>
         </div>
         <div className="fileShown">{text && <pre>{text}</pre>}</div>
