@@ -169,30 +169,8 @@ function SingleProject() {
     }
   };
 
-  // const handleUploadFiles = (files) => {
-  //   const uploaded = [...uploadedFiles];
-  //   files.some((uploadedFile) => {
-  //     if (uploaded.findIndex((f) => f.name === uploadedFile.name) === -1) {
-  //       // if (uploaded.findIndex((f) => f.uploaded != true) === -1) {
-  //       uploaded.push(uploadedFile);
-  //       // }
-  //     } else {
-  //       return;
-  //     }
-  //   });
-  //   setUploadedFiles(uploaded);
-  // };
-
-  // const handleFileEvent = (e) => {
-  //   const chosenFile = Array.prototype.slice.call(e.target.files);
-  //   handleUploadFiles(chosenFile);
-  // };
-
   const [file, setFile] = useState();
 
-  function handleChange(event) {
-    setFile(event.target.files[0]);
-  }
   // "users/Kirolos_jxdKLSaFbaa9HO4kANUvN0p93y03/LMS_anaRzP1Z2w0ew0bSfdur/files/comment.txt_626390af-9f14-4bf9-9459-f985677afed6"
   function handle_upload_to_firebase_storage() {
     console.log(`reference = ${reference}`);
@@ -255,29 +233,10 @@ function SingleProject() {
         }
       );
     });
-
-    // let length_of_uploaded_files = Object.keys(uploadedFiles).length;
-
-    if (length_of_uploaded_files === 0) {
-      Swal.fire({
-        title: `No New Files Selected`,
-        icon: "info",
-      });
-    } else if (length_of_uploaded_files === 1) {
-      Swal.fire({
-        title: `${length_of_uploaded_files} file is uploading!`,
-        icon: "success",
-      });
-    } else {
-      Swal.fire({
-        title: `${length_of_uploaded_files} files are uploading!`,
-        icon: "success",
-      });
-    }
-    // setUploadedFiles([...uploadedFiles]);
   }
 
   function getSingleProject() {
+    console.log("getSingleProject is activavted");
     axios
       .get(
         `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}`
@@ -286,6 +245,7 @@ function SingleProject() {
         // console.log(data);
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
+        console.log(`project_object = ${project_object}`);
         // console.log(project_object);
         let project_data = {
           name: project_object[project_id].project_name,
@@ -299,7 +259,8 @@ function SingleProject() {
 
         var array_of_files = [];
         let files = project_data.files;
-        // console.log(`files = ${files}`);
+        console.log(`project_data = ${project_data}`);
+        console.log(`files = ${files}`);
         if (files != undefined) {
           for (const [key, value] of Object.entries(files)) {
             console.log(key, value);
@@ -406,6 +367,11 @@ function SingleProject() {
     console.log(e.target.files);
   };
 
+  function handleChange(event) {
+    console.log(`event.target.files[0] = ${event.target.files}`);
+    setFile(event.target.files[0]);
+  }
+
   let fileReader;
 
   const onChange = (e) => {
@@ -445,34 +411,7 @@ function SingleProject() {
 
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2>{project.name}</h2>
-      {/* <input
-        id="fileUpload"
-        type="file"
-        multiple
-        accept="*"
-        onChange={handleFileEvent}
-      /> */}
-      {/* {currentFile.percent === 100 &&
-        setCurrentFile({
-          percent: 0,
-          file_name: "",
-        })}
-      <ProgressBar
-        className="progressBar"
-        now={currentFile.percent}
-        label={`${currentFile.file_name} - ${currentFile.percent}%`}
-      />
-      <label>
-        <a
-          href="#"
-          className={`btn btn-primary `}
-          onClick={handle_upload_to_firebase_storage}
-        >
-          Upload File
-        </a>
-      </label> */}
 
-      {/* <h3>{uploadedFile.name}</h3> */}
       <input type="file" name="myfile" onChange={onChange} />
       <a
         href="#"
@@ -482,7 +421,11 @@ function SingleProject() {
         Upload File
       </a>
       <div className="fileBox">
-        <h3 className="fileName">file name</h3>
+        {file != undefined ? (
+          <h3 className="fileName">{file["name"]}</h3>
+        ) : (
+          <h3></h3>
+        )}
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light bg-light ml-auto">
             <button class="navbar-brand" href="#">
