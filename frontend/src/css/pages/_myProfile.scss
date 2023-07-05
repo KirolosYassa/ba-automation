@@ -1,0 +1,40 @@
+.profile-setting-section {
+  padding: 2rem;
+  text-align: center;
+}
+
+.sub-section-profile {
+  background-color: $black-color;
+  color: $white-color;
+  text-align: left;
+  margin: 2rem auto 2rem;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 3px 3px 20px black;
+  font-size: 1.2rem;
+  display: grid;
+  columns: 1rem;
+}
+
+.sub-section-profile-header {
+  font-weight: 700;
+  text-align: center;
+}
+.item-profile {
+  margin: 0.7rem;
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.item-profile input {
+  border-radius: 10px;
+  padding: 0.5rem;
+  border: 0px;
+  box-shadow: 2px 3px 10px black;
+  margin-top: 0.5rem;
+  background-color: color-mix(in srgb, $black-color 90%, black 30%);
+  color: $white-color;
+}
+.password-requirements {
+  opacity: 60%;
+}

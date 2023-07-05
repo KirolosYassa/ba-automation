@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { set_user_id, set_logged_in_user } from "../Redux/user";
 
 function Myprofile() {
   let [projects, setProjects] = useState([]);
   let { user_id } = useParams();
+  // const queryParameters = new URLSearchParams(window.location.search);
+  // const user_id = queryParameters.get("user_id");
+
   const getProjects = () => {
     // fetch statment for getting all projects for a specific user
     // console.log("user_id in profile route = " + user_id);
@@ -48,47 +49,139 @@ function Myprofile() {
     getProjects();
   }, []);
   return (
-    <>
+    <div>
       <HeaderSignedIn />
-      <h1 className="mt-3 ">My Projects</h1>
-      {/* momken a7ot sidebar fe gamb a7ot fe my projects aw ashof y3ni a7ot fehom eh yemen w shemal */}
-      {/* Cards of projects  */}
-      <div className="row projects-section">
-        {/* Makan el projects . map 34an a Loop 3la kol elProjects */}
-        {projects.map((project) => {
-          return (
-            <div className="col-12 col-md-6 col-lg-4" key={project.id}>
-              <div className="card  m-5 ">
-                {/* Displaying cards for  project name , description, and button open project */}
-                <h2 className="card-title">{project.name}</h2>
-                <div className="card-body">
-                  <p className="card-text">{project.description}</p>
-                  <Link
-                    className="btn btn-primary"
-                    to={`/profile/user_id/${user_id}/project/${project.id}`}
-                  >
-                    Open
-                  </Link>
-                </div>
-              </div>
+      <section className="row profile-setting-section">
+        <div className="col-lg-5 col-sm-12 sub-section-profile">
+          <h3 className="sub-section-profile-header">General information</h3>
+          <form className="row" action="#">
+            <div className="item-profile col-6">
+              <label for="first-name" className="">
+                First Name
+              </label>
+              <br />
+              <input
+                type="text"
+                name="first-name"
+                id="first-name"
+                className=""
+                placeholder="Bonnie"
+                required=""
+              />
             </div>
-          );
-        })}
-        <div className="col-12 col-md-3 col-lg-3 card m-5 ">
-          <h2 className="card-title text-secondary">New Project?</h2>
-          <div className="card-body">
-            <br />
-            <Link
-              to={`/addproject/${user_id}`}
-              className="btn btn-success mt-3"
-            >
-              {" "}
-              Add{" "}
-            </Link>
-          </div>
+            <div className="item-profile col-6">
+              <label for="last-name" className="">
+                Last Name
+              </label>
+              <br />
+              <input
+                type="text"
+                name="last-name"
+                id="last-name"
+                className=""
+                placeholder="Green"
+                required=""
+              />
+            </div>
+            <div className="item-profile col-6">
+              <label for="email" className="">
+                Email
+              </label>
+              <br />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className=""
+                placeholder="example@company.com"
+                required=""
+              />
+            </div>
+
+            <div className="item-profile col-6">
+              <label for="role" className="">
+                Role
+              </label>
+              <br />
+              <input
+                type="text"
+                name="role"
+                id="role"
+                className=""
+                placeholder="Student"
+                required=""
+              />
+            </div>
+
+            <div className="">
+              <button className="btn btn-primary" type="submit">
+                Save general info
+              </button>
+            </div>
+          </form>
         </div>
-      </div>
-    </>
+
+        <div class="col-2"></div>
+        <div className="col-lg-5 col-sm-12  sub-section-profile">
+          <h3 className="sub-section-profile-header">Password information</h3>
+          <form className="row" action="#">
+            <div className="item-profile col-6">
+              <label for="current-password" className="">
+                Current password
+              </label>
+              <br />
+              <input
+                type="text"
+                name="current-password"
+                id="current-password"
+                className=""
+                placeholder="••••••••"
+                required=""
+              />
+            </div>
+            <div className="item-profile col-6">
+              <label for="new-password" className="">
+                New password
+              </label>
+              <br />
+              <input
+                type="text"
+                name="new-password"
+                id="new-password"
+                className=""
+                placeholder="••••••••"
+                required=""
+              />
+            </div>
+            <div className="item-profile col-6">
+              <label for="confirm-password" className="">
+                Confirm password
+              </label>
+              <br />
+              <input
+                type="text"
+                name="confirm-password"
+                id="confirm-password"
+                className=""
+                placeholder="••••••••"
+                required=""
+              />
+            </div>
+            <div className="password-requirements">
+              <div className="">Password requirements:</div>
+              <ul className="">
+                <li className="">At least 8 characters</li>
+              </ul>
+            </div>
+            <div className="">
+              <button className="btn btn-primary" type="submit">
+                Save new password
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
   );
 }
 export default Myprofile;
