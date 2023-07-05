@@ -57,7 +57,7 @@ function Addproject() {
   return (
     <>
       <HeaderSignedIn />
-      <form className="centering">
+      <form className="centering mt-5">
         <h3>Add new Project</h3>
         <div className="mb-3">
           <label>Project name:</label>

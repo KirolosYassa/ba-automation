@@ -10,19 +10,16 @@ function Footer() {
                 <h6 className="text-uppercase fw-bold mb-4">
                   <i className="fas fa-gem me-3"></i>About Us
                 </h6>
-                <p className="text-center">
-                  walahi e7na team 10/10 bnsh2a 3a4an n3ml el 3azama di 3a4an
-                  nt5rg mn el koleya el toxic di w ed3olna w rabak ysahel ba2a w
-                  shewayt klam kter kda w ha7ot lesa el link bta3 el gp booklet
-                  isa lama n5lso bs isa
+                <p className="text-center" >
+                  walahi e7na team 10/10  bnsh2a 3a4an n3ml el 3azama di 3a4an nt5rg
+                  mn el koleya el toxic di w ed3olna w rabak ysahel ba2a w shewayt klam
+                  kter kda w ha7ot lesa el link bta3 el gp booklet isa lama n5lso bs isa
                 </p>
               </div>
               <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                 <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
                 <p>
-                  <Link to="/about" className="text-reset">
-                    about
-                  </Link>
+                  <Link to="/about" className="text-reset">about</Link>
                 </p>
                 <p>
                   <Link to="/" className="text-reset">

@@ -117,21 +117,22 @@ function Signup() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="mb-3 from-control">
           <label>Role: </label>
           <br></br>
           <select
             name="Role"
             id="role"
             placeholder="choose role"
+            className="mb-3 from-control w-100 h-100 rounded border border-secondary"
             onChange={(e) => {
               setRole(e.target.value);
             }}
           >
-            <option value="other">other</option>
-            <option value="Business Analyst">Business Analyst</option>
-            <option value="Student">Student</option>
-            <option value="Product Owner">Product Owner</option>
+            <option className="mb-3 from-control" value="other">Other</option>
+            <option className="mb-3 from-control" value="Business Analyst">Business Analyst</option>
+            <option className="mb-3 from-control" value="Student">Student</option>
+            <option className="mb-3 from-control" value="Product Owner">Product Owner</option>
           </select>
         </div>
 
