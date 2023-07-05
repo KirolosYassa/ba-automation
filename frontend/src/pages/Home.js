@@ -3,6 +3,8 @@ import Header from "../Components/Header";
 import Image1 from "../Assets/image3_slider.png";
 import Image2 from "../Assets/image2_slider.jpg";
 import Image3 from "../Assets/image1_slider.jpg";
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <>
@@ -62,9 +64,11 @@ function Home() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      <button className="create-uml-button btn btn-info">
-        Create UML Diagram
-      </button>
+      <Link to="/login">
+        <button className="create-uml-button btn btn-info">
+          Create UML Diagram
+        </button>
+      </Link>
       {/* benefits and services  */}
       <p className="home-paragraph">
         In every software development team, the usage and requirement analysis

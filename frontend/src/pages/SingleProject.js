@@ -43,7 +43,16 @@ function SingleProject() {
 
   const [lastfilename, setLastFileName] = useState();
   const [statefilename, setStateFileName] = useState();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState({
+    file_reference: "",
+    file_size: "",
+    file_type: "",
+    url_reference: "",
+    has_useCase_diagram: "",
+    has_Class_diagram: "",
+    usecase_diagram_url_reference: "",
+    class_diagram_url_reference: "",
+  });
   const [text, setText] = useState();
 
   const navigate = useNavigate();
@@ -147,7 +156,7 @@ function SingleProject() {
     let file_name = file.name;
     try {
       Swal.fire({
-        title: `Do you want to delete the Last file "${lastfilename}"?`,
+        title: `Do you want to delete the Last file "${file_name}"?`,
         icon: "warning",
         showDenyButton: true,
         denyButtonText: "DELETE",
@@ -437,15 +446,16 @@ function SingleProject() {
 
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2 className="project-name-title">{project.name}</h2>
-      <div className="row upload-section">
-        <div className="col-sm-12 col-lg-6">
-          <input type="file" name="myfile" onChange={onChange} accept=".txt" />
-          <p>50 KB Max. Size is allowed</p>
-        </div>
-        <div className="col-sm-12 col-lg-6">
+      <div className=" upload-section">
+        {/* <div className=" input-div"> */}
+        <input type="file" name="myfile" onChange={onChange} accept=".txt" />
+        <p>50 KB Max. Size is allowed</p>
+        {/* </div> */}
+
+        <div className="">
           <a
             href="#"
-            className={`btn btn-primary col-sm-12 col-lg-6`}
+            className={`btn btn-primary `}
             onClick={handle_upload_to_firebase_storage}
           >
             Upload File
@@ -454,25 +464,24 @@ function SingleProject() {
       </div>
 
       <div className="fileBox">
-        {statefilename === lastfilename ? (
-          <h3 className="fileName">
-            {statefilename}
-            {/* <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p> */}
-          </h3>
-        ) : (
-          <h3 className="fileName">
-            {lastfilename}
-            <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p>
-          </h3>
-        )}
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-light bg-light ml-auto">
-            <button className="btn btn-danger" href="#" onClick={deleteFile}>
-              delete file
-            </button>
+            {statefilename === lastfilename ? (
+              <h3 className="fileName">
+                {statefilename}
+                {/* <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p> */}
+              </h3>
+            ) : (
+              <h3 className="fileName">
+                {lastfilename}
+                <p className="">
+                  ( {(parseInt(file.size) / 1024).toFixed(2)} KB)
+                </p>
+              </h3>
+            )}
             {/* USE CASE DIAGRAM */}
 
-            {/* {file.has_useCase_diagram ? (
+            {file.has_useCase_diagram ? (
               <button className="btn btn-success">
                 <a target="_blank" href={file.usecase_diagram_url_reference}>
                   {file.name} Use Case Diagram
@@ -485,11 +494,11 @@ function SingleProject() {
               >
                 Generate Use Case Diagram
               </button>
-            )} */}
+            )}
 
             {/* CLASS DIAGRAM */}
 
-            {/* {file.has_Class_diagram ? (
+            {file.has_Class_diagram ? (
               <button className="btn btn-success">
                 <a target="_blank" href={file.class_diagram_url_reference}>
                   {file.name} Class Diagram
@@ -502,7 +511,10 @@ function SingleProject() {
               >
                 Generate Class Diagram
               </button>
-            )} */}
+            )}
+            <button className="btn btn-danger" href="#" onClick={deleteFile}>
+              delete file
+            </button>
           </nav>
         </div>
         <div className="fileShown">{text && <pre>{text}</pre>}</div>

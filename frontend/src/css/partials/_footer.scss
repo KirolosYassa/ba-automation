@@ -2,7 +2,7 @@
 
 /********************************** Footer **********************************/
 footer {
-  background-color: $black-color;
+  background-color: $black-color !important;
   color: $white-color !important;
 
   text-align: center;
@@ -11,6 +11,17 @@ footer {
 .Sec1 {
   color: $white-color !important;
 }
+
+footer p,
+h6 {
+  margin: 0;
+  color: $white-color !important;
+}
+
+footer i {
+  margin: 0;
+}
+
 // footer img {
 //     width: 30px;
 //     filter: brightness(100);
@@ -20,10 +31,6 @@ footer {
 //     &:nth-child(2) {
 //         margin-inline-end: 0rem;
 //     }
-// }
-
-// footer p {
-//     margin: 0;
 // }
 
 // .follow-us {

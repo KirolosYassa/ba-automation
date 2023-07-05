@@ -18,7 +18,8 @@
 }
 
 h1 {
-  color: crimson;
+  color: #303030;
+  margin-top: 2rem !important;
   font-size: large;
   font-family: "Times New Roman", Times, serif;
 }
@@ -149,7 +150,7 @@ nav {
 
 /********************************** Footer **********************************/
 footer {
-  background-color: #303030;
+  background-color: #303030 !important;
   color: #f6f6f6 !important;
   text-align: center;
   padding: 30px 10px 10px;
@@ -157,6 +158,16 @@ footer {
 
 .Sec1 {
   color: #f6f6f6 !important;
+}
+
+footer p,
+h6 {
+  margin: 0;
+  color: #f6f6f6 !important;
+}
+
+footer i {
+  margin: 0;
 }
 
 .btn {
@@ -520,6 +531,7 @@ td h1 {
   width: 50%;
   font-weight: 500;
   opacity: 80%;
+  color: #303030;
   font-size: 1.2rem;
   padding: 1rem;
   margin: auto;
@@ -554,20 +566,34 @@ td h1 {
 
 .project-name-title {
   height: 2rem;
+  margin: 1rem 0 2rem;
 }
 
 .upload-section {
   width: 50%;
   margin: auto !important;
+  border: 1px solid black;
+  border-style: dashed;
+  border-width: 4px;
+  opacity: 90%;
+}
+
+.upload-section p {
+  margin-top: 0px;
+}
+
+.upload-section input {
+  margin-bottom: 0px;
 }
 
 .upload-section * {
   margin: 1rem;
 }
 
-.upload-section p {
+.input-div p {
   margin: 0;
   opacity: 70%;
+  display: inline-block;
 }
 
 .btn a {
@@ -581,10 +607,23 @@ td h1 {
 .fileBox {
   width: auto;
   padding: 3rem;
+  text-align: -webkit-center;
 }
 
 .fileName {
   text-align: left;
+  height: 2rem;
+  margin: 1rem;
+}
+@media (max-width: 900px) {
+  .fileName {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .fileName {
+    font-size: 0.7rem;
+  }
 }
 
 .fileName p {
@@ -592,6 +631,16 @@ td h1 {
   font-size: 1.1rem;
   display: inline-block;
   margin: 0.5rem;
+}
+@media (max-width: 900px) {
+  .fileName p {
+    font-size: 0.4rem;
+  }
+}
+@media (max-width: 600px) {
+  .fileName p {
+    font-size: 0.3rem;
+  }
 }
 
 .fileBox .container {
@@ -610,6 +659,7 @@ td h1 {
 
 .fileBox button {
   border: 0;
+  margin: 0.5rem;
 }
 
 .fileShown {
@@ -622,4 +672,18 @@ td h1 {
   .fileShown {
     width: 1120px;
   }
+}
+
+.projects-section {
+  padding: 2rem;
+}
+
+.about-paragraph-section {
+  text-align: left;
+  padding: 3rem;
+}
+
+.about-paragraph-section p {
+  font-size: 1.2rem;
+  font-weight: 500;
 }/*# sourceMappingURL=index.css.map */

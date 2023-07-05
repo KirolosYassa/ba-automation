@@ -30,7 +30,9 @@ def generate_usecase_diagram(
 ):
     print(f"url_reference = {url_reference}")
     # get sentences
-    file = helperFunctions.getFileByUrl(fileURL=url_reference)
+    file = helperFunctions.getFileByUrl(
+        fileURL="https://firebasestorage.googleapis.com/v0/b/ba-automation-5a4ae.appspot.com/o/users%2FTestOneUser_bAetrNSQkVcGLPExoRjaoKYPQMg1%2FCoffee%20Shop_AsggMcho2theo8nGuL15%2Ffiles%2Funiversity.txt_d89af01a-38b1-411a-80de-eba6f2697505?alt=media&token=e1e3ef3d-bfc1-493a-b376-41c541679167"
+    )
     sentences = helperFunctions.getSentencesFromFile(file)
     pprint(sentences)
     # reduce sentences

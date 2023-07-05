@@ -16,6 +16,7 @@ import Signup from "./pages/Signup";
 import Footer from "./Components/Footer";
 import Home from "./pages/Home";
 import Myprofile from "./pages/Myprofile";
+import Myprojects from "./pages/Myprojects";
 import About from "./pages/About";
 import SingleProject from "./pages/SingleProject";
 import Addproject from "./pages/Addproject";
@@ -37,6 +38,7 @@ function App() {
         {/* 3ayzeen nzbot el routeen dool 3a4an da el profile bta3 user mo3yn fa --> htb2a 8aleban '/:userid/myprojects' */}
         {/* <Route path="profile" element={<Myprofile />} /> */}
         <Route path="profile/:user_id" element={<Myprofile />} />
+        <Route path="projects/:user_id" element={<Myprojects />} />
         <Route
           path="profile/user_id/:user_id/project/:project_id"
           element={<SingleProject />}

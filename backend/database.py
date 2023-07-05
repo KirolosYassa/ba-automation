@@ -70,7 +70,12 @@ def generate_diagram(file_data, diagram_type):
         "file_url_reference": file_data["file_url_reference"],
         "file_name": file_data["file_name"],
     }
+    file_url_reference = data["file_url_reference"]
     image_reference = f"users/{data['user_name']}_{data['user_id']}/{data['project_name']}_{data['project_id']}/diagrams/{diagram_type}_{data['file_name']}.png"
+    print("----------------------------------------------------------------")
+    print(f"file_url_reference in Database = {file_url_reference}")
+    print("----------------------------------------------------------------")
+
     diagram_file_pathname = processing_on_file(data, diagram_type)
     print(f"diagram_file_pathname = {diagram_file_pathname}")
     url_reference = upload_blob(
@@ -79,6 +84,9 @@ def generate_diagram(file_data, diagram_type):
         # source_file_name="../backend/UML/other/usecasediagram1111.png",
         destination_blob_name=image_reference,
     )
+    print("----------------------------------------------------------------")
+    print(f"url_reference = {url_reference}")
+    print("----------------------------------------------------------------")
     save_generated_file_in_firestore(
         url_reference=url_reference,
         file_data=data,

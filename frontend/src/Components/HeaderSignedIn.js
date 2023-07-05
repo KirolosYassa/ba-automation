@@ -44,9 +44,18 @@ function HeaderSignedIn() {
               </li> */}
               <li className="nav-item">
                 <Link
-                  className="nav-link active"
+                  className="nav-link "
                   aria-current="page"
                   to={`/profile/${user_id}`}
+                >
+                  My profile
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link "
+                  aria-current="page"
+                  to={`/projects/${user_id}`}
                 >
                   My projects
                 </Link>

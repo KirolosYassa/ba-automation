@@ -11,19 +11,32 @@
 
 .project-name-title {
   height: 2rem;
+  margin: 1rem 0 2rem;
 }
 
 .upload-section {
   width: 50%;
   margin: auto !important;
+  border: 1px solid black;
+  border-style: dashed;
+  border-width: 4px;
+  opacity: 90%;
 }
-
+.upload-section p {
+  // text-align: left;
+  margin-top: 0px;
+}
+.upload-section input {
+  margin-bottom: 0px;
+  // text-align: left;
+}
 .upload-section * {
   margin: 1rem;
 }
-.upload-section p {
+.input-div p {
   margin: 0;
   opacity: 70%;
+  display: inline-block;
 }
 .btn a {
   color: black;
@@ -35,10 +48,18 @@
 .fileBox {
   width: auto;
   padding: 3rem;
-  // text-align: center;
+  text-align: -webkit-center;
 }
 .fileName {
   text-align: left;
+  height: 2rem;
+  margin: 1rem;
+  @include mama-bear {
+    font-size: 1rem;
+  }
+  @include baby-bear {
+    font-size: 0.7rem;
+  }
 }
 
 .fileName p {
@@ -46,6 +67,13 @@
   font-size: 1.1rem;
   display: inline-block;
   margin: 0.5rem;
+
+  @include mama-bear {
+    font-size: 0.4rem;
+  }
+  @include baby-bear {
+    font-size: 0.3rem;
+  }
 }
 .fileBox .container {
   padding: 0;
@@ -61,6 +89,7 @@
 
 .fileBox button {
   border: 0;
+  margin: 0.5rem;
 }
 .fileShown {
   text-align: left;

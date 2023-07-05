@@ -5,9 +5,24 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { set_user_id, set_logged_in_user } from "../Redux/user";
 
-function Myprofile() {
+function Myprojects() {
   let [projects, setProjects] = useState([]);
   let { user_id } = useParams();
+  // const {
+  //   user_loggedin_id,
+  //   email,
+  //   first_name,
+  //   last_name,
+  //   role,
+  //   user_projects,
+  // } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+
+  // const { user_id } = route.params;
+
+  // const queryParameters = new URLSearchParams(window.location.search);
+  // const user_id = queryParameters.get("user_id");
+
   const getProjects = () => {
     // fetch statment for getting all projects for a specific user
     // console.log("user_id in profile route = " + user_id);
@@ -91,4 +106,4 @@ function Myprofile() {
     </>
   );
 }
-export default Myprofile;
+export default Myprojects;

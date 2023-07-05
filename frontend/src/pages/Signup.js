@@ -135,11 +135,6 @@ function Signup() {
           </select>
         </div>
 
-        <div className="mb-3">
-          <label>Other:</label>
-          <input type="text" className="form-control" />
-        </div>
-
         <div className="d-grid">
           <button type="submit" className="btn btn-primary" onClick={adduser}>
             Sign Up

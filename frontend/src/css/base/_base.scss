@@ -22,7 +22,8 @@
 }
 
 h1 {
-  color: crimson;
+  color: $black-color;
+  margin-top: 2rem !important;
   font-size: large;
   font-family: "Times New Roman", Times, serif;
 }
