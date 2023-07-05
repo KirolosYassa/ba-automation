@@ -19,6 +19,8 @@ import Myprofile from "./pages/Myprofile";
 import About from "./pages/About";
 import SingleProject from "./pages/SingleProject";
 import Addproject from "./pages/Addproject";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   useEffect(() => {
@@ -26,6 +28,7 @@ function App() {
   }, []);
   return (
     <div className="App">
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />

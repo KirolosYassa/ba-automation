@@ -565,6 +565,11 @@ td h1 {
   margin: 1rem;
 }
 
+.upload-section p {
+  margin: 0;
+  opacity: 70%;
+}
+
 .btn a {
   color: black;
 }
@@ -580,6 +585,13 @@ td h1 {
 
 .fileName {
   text-align: left;
+}
+
+.fileName p {
+  opacity: 70%;
+  font-size: 1.1rem;
+  display: inline-block;
+  margin: 0.5rem;
 }
 
 .fileBox .container {

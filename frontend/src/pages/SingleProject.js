@@ -9,6 +9,8 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import { btoa } from "base64-js";
 import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
 import TextEditor from "../Components/uploaded File.js/textEditor";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   storage,
@@ -45,6 +47,18 @@ function SingleProject() {
   const [text, setText] = useState();
 
   const navigate = useNavigate();
+
+  const notify = () =>
+    toast("File Uploading", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: currentFile.percent,
+      theme: "light",
+    });
 
   function automate_url(url) {
     let starting_url = "https://firebasestorage.googleapis.com";
@@ -201,6 +215,15 @@ function SingleProject() {
       console.log(`currentFile = ${currentFile}`);
       // console.log(`file_uploaded.size = ${file_uploaded.size}`);
       let file_uploaded = currentFile;
+      if (file_uploaded.size > 51200) {
+        alert("File upload Max size exceeded");
+        return;
+      }
+      if (file_uploaded.type != "text/plain") {
+        alert("File Type is not supported");
+        return;
+      }
+      notify();
       console.log(`file_uploaded.name = ${file_uploaded.name}`);
       let single_file_reference = `${reference}/files/${
         file_uploaded.name
@@ -256,7 +279,7 @@ function SingleProject() {
       )
       .then((data) => {
         // console.log(data);
-        // console.log(`data.data.data = ${data.data.data}`);
+        console.log(`data.data.data = ${JSON.stringify(data.data.data)}`);
         let project_object = data.data.data;
         // console.log(`project_object = ${project_object}`);
         // console.log(project_object);
@@ -269,47 +292,17 @@ function SingleProject() {
           files: project_object[project_id].files,
         };
         setProject(project_data);
-
-        var array_of_files = [];
+        console.log(`project data name = ${project_data.name}`);
         let files = project_data.files;
-        // console.log(`files = ${files}`);
+        console.log(`files = ${JSON.stringify(files)}`);
         if (files != undefined) {
-          for (const [key, value] of Object.entries(files)) {
-            console.log(key, value);
-            if (value.has_useCase_diagram == true) {
-              console.log(
-                `value.diagram_file_reference= ${value.diagram_url_reference}`
-              );
-              var url_ref;
-              getDownloadURL(ref(storage, value.diagram_file_reference))
-                .then((url) => {
-                  // `url` is the download URL for 'images/stars.jpg'
-                  console.log(`url = ${url}`);
-                  url_ref = url;
-                })
-                .catch((error) => {
-                  // Handle any errors
-                  console.log("Downloading error...");
-                });
-              array_of_files.push({
-                name: value.name,
-                type: value.type,
-                size: value.size,
-                reference: value.file_reference,
-                url_reference: value.url_reference,
-                uploaded: true,
-                usecase_diagram_url_reference: url_ref,
-                diagram_file_reference: value.diagram_file_reference,
-              });
-              continue;
-            }
-            console.log(`value = ${JSON.stringify(value)}`);
-            array_of_files.push(value);
-          }
-          let file_url_reference = array_of_files[0].url_reference;
-          let file = array_of_files[0];
-          setFile(file);
-          setLastFileName(file.name);
+          const file_name = Object.keys(files)[0];
+          console.log(`file name = ${file_name}`);
+          let file_url_reference = files[file_name].url_reference;
+          console.log(`file_url_reference = ${file_url_reference}`);
+          let project_file = files[file_name];
+          setFile(project_file);
+          setLastFileName(project_file.name);
 
           fetch_content(file_url_reference);
         }
@@ -320,8 +313,8 @@ function SingleProject() {
         console.log(`root_ref = ${root_ref}`);
         files_ref = ref(storage, `${root_ref}/files/`);
         console.log("get Single Project axios data have come");
-        console.log(`project_name = ${project.name}`);
-        console.log(`project_name = ${project.user_name}`);
+        // console.log(`project_name = ${project.name}`);
+        // console.log(`project_name = ${project.user_name}`);
       });
   }
 
@@ -445,36 +438,41 @@ function SingleProject() {
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2 className="project-name-title">{project.name}</h2>
       <div className="row upload-section">
-        <input
-          type="file"
-          name="myfile"
-          onChange={onChange}
-          className="col-sm-12 col-lg-6"
-          // accept=".txt .docs"
-        />
-        <a
-          href="#"
-          className={`btn btn-primary col-sm-12 col-lg-6`}
-          onClick={handle_upload_to_firebase_storage}
-        >
-          Upload File
-        </a>
+        <div className="col-sm-12 col-lg-6">
+          <input type="file" name="myfile" onChange={onChange} accept=".txt" />
+          <p>50 KB Max. Size is allowed</p>
+        </div>
+        <div className="col-sm-12 col-lg-6">
+          <a
+            href="#"
+            className={`btn btn-primary col-sm-12 col-lg-6`}
+            onClick={handle_upload_to_firebase_storage}
+          >
+            Upload File
+          </a>
+        </div>
       </div>
 
       <div className="fileBox">
-        {/* <h3 className="fileName">{lastfile["name"]}</h3> */}
         {statefilename === lastfilename ? (
-          <h3 className="fileName">{statefilename}</h3>
+          <h3 className="fileName">
+            {statefilename}
+            {/* <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p> */}
+          </h3>
         ) : (
-          <h3 className="fileName">{lastfilename}</h3>
+          <h3 className="fileName">
+            {lastfilename}
+            <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p>
+          </h3>
         )}
-        <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light ml-auto">
-            <button class="btn btn-danger" href="#" onClick={deleteFile}>
+        <div className="container">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light ml-auto">
+            <button className="btn btn-danger" href="#" onClick={deleteFile}>
               delete file
             </button>
             {/* USE CASE DIAGRAM */}
-            {file.has_useCase_diagram ? (
+
+            {/* {file.has_useCase_diagram ? (
               <button className="btn btn-success">
                 <a target="_blank" href={file.usecase_diagram_url_reference}>
                   {file.name} Use Case Diagram
@@ -487,9 +485,11 @@ function SingleProject() {
               >
                 Generate Use Case Diagram
               </button>
-            )}
+            )} */}
+
             {/* CLASS DIAGRAM */}
-            {file.has_Class_diagram ? (
+
+            {/* {file.has_Class_diagram ? (
               <button className="btn btn-success">
                 <a target="_blank" href={file.class_diagram_url_reference}>
                   {file.name} Class Diagram
@@ -502,7 +502,7 @@ function SingleProject() {
               >
                 Generate Class Diagram
               </button>
-            )}
+            )} */}
           </nav>
         </div>
         <div className="fileShown">{text && <pre>{text}</pre>}</div>
