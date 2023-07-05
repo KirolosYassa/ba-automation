@@ -73,7 +73,7 @@ function Myprofile() {
         {projects.map((project) => {
           return (
             <div className="col-12 col-md-6 col-lg-4" key={project.id}>
-              <div className="card  mt-5 ">
+              <div className="card  m-5 ">
                 {/* Displaying cards for  project name , description, and button open project */}
                 <h2 className="card-title">{project.name}</h2>
                 <div className="card-body">
@@ -89,7 +89,7 @@ function Myprofile() {
             </div>
           );
         })}
-        <div className="col-12 col-md-6 col-lg-4 card pl-5 m-3 mt-5">
+        <div className="col-12 col-md-3 col-lg-3 card m-5 ">
           <h2 className="card-title text-secondary">New Project?</h2>
           <div className="card-body">
             <br />
