@@ -66,7 +66,6 @@ function Myprojects() {
     <>
       <HeaderSignedIn />
       <h1 className="mt-3 ">My Projects</h1>
-      {/* momken a7ot sidebar fe gamb a7ot fe my projects aw ashof y3ni a7ot fehom eh yemen w shemal */}
       {/* Cards of projects  */}
       <div className="row projects-section">
         {/* Makan el projects . map 34an a Loop 3la kol elProjects */}
