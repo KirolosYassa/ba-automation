@@ -16,8 +16,6 @@ nav {
 }
 
 .navbar p {
-  //   font-family: "Palette Mosaic", cursive;
-  //   font-family: "Patrick Hand", cursive;
   font-family: "Rock 3D", cursive;
   text-align: center;
 }
@@ -31,4 +29,13 @@ nav {
 .nav-item a:hover {
   font-weight: 600;
   opacity: 80%;
+}
+
+.navbar-collapse ul {
+  position: absolute;
+  right: 1rem;
+  @include mama-bear {
+    position: static;
+    // float: left !important;
+  }
 }

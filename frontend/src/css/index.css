@@ -159,6 +159,16 @@ nav {
   opacity: 80%;
 }
 
+.navbar-collapse ul {
+  position: absolute;
+  right: 1rem;
+}
+@media (max-width: 900px) {
+  .navbar-collapse ul {
+    position: static;
+  }
+}
+
 /********************************** Footer **********************************/
 footer {
   background-color: #303030 !important;

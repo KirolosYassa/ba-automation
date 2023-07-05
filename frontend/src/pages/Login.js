@@ -56,7 +56,7 @@ function Login() {
         //   search: `?uesr_id=${userCredential.user.uid}`,
         // });
 
-        navigate(`/profile/${userCredential.user.uid}`);
+        navigate(`/projects/${userCredential.user.uid}`);
         // navigate.navigate(`/profile`, { user_id: userCredential.user.uid });
       }
     } catch (error) {
