@@ -148,6 +148,17 @@ nav {
   text-align: center;
 }
 
+.nav-item a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.nav-item a:hover {
+  font-weight: 600;
+  opacity: 80%;
+}
+
 /********************************** Footer **********************************/
 footer {
   background-color: #303030 !important;
@@ -160,14 +171,36 @@ footer {
   color: #f6f6f6 !important;
 }
 
-footer p,
-h6 {
+footer p {
+  margin: 0;
+  color: #f6f6f6 !important;
+}
+
+footer h6 {
   margin: 0;
   color: #f6f6f6 !important;
 }
 
 footer i {
   margin: 0;
+}
+
+footer a {
+  color: #f6f6f6;
+  font-weight: 400;
+}
+
+footer a:hover {
+  color: #f6f6f6;
+  font-weight: 600;
+}
+
+.text-uppercase {
+  font-size: 1.5rem;
+}
+
+.text-reset {
+  font-size: 1.3rem;
 }
 
 .btn {

@@ -12,8 +12,12 @@ footer {
   color: $white-color !important;
 }
 
-footer p,
-h6 {
+footer p {
+  margin: 0;
+  color: $white-color !important;
+}
+
+footer h6 {
   margin: 0;
   color: $white-color !important;
 }
@@ -21,7 +25,20 @@ h6 {
 footer i {
   margin: 0;
 }
-
+footer a {
+  color: $white-color;
+  font-weight: 400;
+}
+footer a:hover {
+  color: $white-color;
+  font-weight: 600;
+}
+.text-uppercase {
+  font-size: 1.5rem;
+}
+.text-reset {
+  font-size: 1.3rem;
+}
 // footer img {
 //     width: 30px;
 //     filter: brightness(100);
