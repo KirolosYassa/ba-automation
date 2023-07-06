@@ -29,7 +29,6 @@ format of user story . As a ..... , i want to , so that   ...... .
 def generate_usecase_diagram(
     file_text,
     file_name,
-    diagram_type,
 ):
     # get sentences
     print(f"file_text in mainUseCase file = {file_text}")
@@ -66,36 +65,34 @@ def generate_usecase_diagram(
 
     file_name = file_name.replace(".txt", "")
 
-    if diagram_type == "use_case_diagram":
-        filename = f"other/use_case_{file_name}_{id}.txt"
-        dir = os.getcwd()
-        filename = r"{}\UML_classdiagramNew\other\use_case_{}_{}.txt".format(dir, file_name, id)
-        print(f"filename = {filename}")
-        # filename = f"{os.getcwd()}\\other\\use_case_{file_name}_{id}.txt"
-       
-        # filename2 = f"other/use_case_{file_name}_{id}.png"
-        # filename2 = f"D:/Graduation project/BA Automation Project/ba-automation/backend/UML_classdiagramNew/other/use_case_{file_name}_{id}.png"
-        # filename2 = f"D:\\Graduation project\\BA Automation Project\\ba-automation\\backend\\UML_classdiagramNew\\other\\use_case_{file_name}_{id}.png"
-        # filename2 = f"./UML_classdiagrmaNew/other/use_case_{file_name}_{id}.png"
-        filename2 = r"{}\UML_classdiagramNew\other\use_case_{}_{}.png".format(dir, file_name, id)
-    elif diagram_type == "class_diagram":
-        filename = f"D:\\Graduation project\\BA Automation Project\\ba-automation\\backend\\UML_classdiagramNew\\other\\class_diagram_{file_name}_{id}.txt"
-        filename2 = f"D:\\Graduation project\\BA Automation Project\\ba-automation\\backend\\UML_classdiagramNew\\other\\class_diagram_{file_name}_{id}.png"
+    txt_plantuml_file = f"other/use_case_{file_name}_{id}.txt"
+    dir = os.getcwd()
+    txt_plantuml_file = r"{}\UML_classdiagramNew\other\use_case_{}_{}.txt".format(dir, file_name, id)
+    print(f"txt_plantuml_file = {txt_plantuml_file}")
+    # txt_plantuml_file = f"{os.getcwd()}\\other\\use_case_{file_name}_{id}.txt"
+    
+    # png_diagram_file_extracted = f"other/use_case_{file_name}_{id}.png"
+    # png_diagram_file_extracted = f"D:/Graduation project/BA Automation Project/ba-automation/backend/UML_classdiagramNew/other/use_case_{file_name}_{id}.png"
+    # png_diagram_file_extracted = f"D:\\Graduation project\\BA Automation Project\\ba-automation\\backend\\UML_classdiagramNew\\other\\use_case_{file_name}_{id}.png"
+    # png_diagram_file_extracted = f"./UML_classdiagrmaNew/other/use_case_{file_name}_{id}.png"
+    png_diagram_file_extracted = r"{}\UML_classdiagramNew\other\use_case_{}_{}.png".format(dir, file_name, id)
 
-    # filename = "other/usecasediagram2.txt"
-    # filename2 = "other/usecasediagram2.png"
-    if os.path.exists(filename):
-        os.remove(filename)
+    # txt_plantuml_file = "other/usecasediagram2.txt"
+    # png_diagram_file_extracted = "other/usecasediagram2.png"
+    if os.path.exists(txt_plantuml_file):
+        os.remove(txt_plantuml_file)
     else:
-        print("The filename does not exist")
+        print("The txt_plantuml_file does not exist")
 
-    if os.path.exists(filename2):
-        os.remove(filename2)
+    if os.path.exists(png_diagram_file_extracted):
+        os.remove(png_diagram_file_extracted)
     else:
-        print("The filename2 does not exist")
+        print("The png_diagram_file_extracted does not exist")
+
+        
     print(os.getcwd())
     os.system("pip install plantuml")
-    usecasemodel = plantUML.UseCaseModel(filename)
+    usecasemodel = plantUML.UseCaseModel(txt_plantuml_file)
     usecasemodel.addCustomMessage("left to right direction")
 
     for i, actor in enumerate(actors):
@@ -143,6 +140,6 @@ def generate_usecase_diagram(
                                 )
 
     usecasemodel.closeFile()
-    os.system("python -m plantuml " + filename)
-    print(f"filename2 = {filename2}")
-    return filename2
+    os.system("python -m plantuml " + txt_plantuml_file)
+    print(f"png_diagram_file_extracted = {png_diagram_file_extracted}")
+    return png_diagram_file_extracted

@@ -2,17 +2,22 @@ import os
 
 from spacy.matcher import Matcher
 
-import plantUML
-from ClassEntity import ClassEntity
-from hellpingFiles.concept import getClassesFromFrequency2
-import helperFunctions
-import algorithm
+import UML_classdiagramNew.plantUML as plantUML
+import UML_classdiagramNew.ClassEntity as ClassEntity
+from UML_classdiagramNew.hellpingFiles.concept import getClassesFromFrequency2
+import UML_classdiagramNew.helperFunctions as helperFunctions
+import UML_classdiagramNew.algorithm as algorithm
 import uuid
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
+def generate_class_diagram(
+    file_text,
+    file_name,
+):
     # variables
-    file = helperFunctions.getFile ("userStories/text.txt")
+    print(f"file_text in mainUseCase file = {file_text}")
+    file = file_text
     sentences = helperFunctions.getSentencesFromFile ( file )
     sentences = algorithm.preprocess1 ( sentences )
 
@@ -64,20 +69,32 @@ if __name__ == '__main__':
 
     #creating uml model and rendering picture for output
     id=uuid.uuid4 ()
-    filename = f"diagrams/{id}.txt"
-    filename2 = f"diagrams/{id}.png"
-    if os.path.exists ( filename ) and os.path.exists ( filename2 ):
-        os.remove ( filename )
-        os.remove ( filename2 )
+    dir = os.getcwd()
+    txt_plantuml_file = r"{}\UML_classdiagramNew\other\class_diagram_{}_{}.txt".format(dir, file_name, id)
+    png_diagram_file_extracted = r"{}\UML_classdiagramNew\other\class_diagram_{}_{}.png".format(dir, file_name, id)
+
+    #txt_plantuml_file = f"diagrams/{id}.txt"
+    #png_diagram_file_extracted = f"diagrams/{id}.png"
+    if os.path.exists(txt_plantuml_file):
+        os.remove(txt_plantuml_file)
     else:
-        print ( "The file does not exist" )
+        print("The txt_plantuml_file does not exist")
+
+    if os.path.exists(png_diagram_file_extracted):
+        os.remove(png_diagram_file_extracted)
+    else:
+        print("The png_diagram_file_extracted does not exist")
+
+
+    print(os.getcwd())
 
     os.system ( "pip install plantuml" )
-    classModel = plantUML.ClassModel ( filename )
+    classModel = plantUML.ClassModel ( txt_plantuml_file )
 
 
     #adding classes and attributes to model
     for classVar in algorithm.classes:
+        print(f"classVar = {classVar}")
         classEntity = ClassEntity ( classVar )
         if classEntity.className in algorithm.attributes.keys():
             for x in algorithm.attributes [ classEntity.className ]:
@@ -120,70 +137,5 @@ if __name__ == '__main__':
             classModel.addMorFtoClass ( class1,method,"+"  )
 
     classModel.closeFile ()
-    os.system ( "python -m plantuml " + filename )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# gives error in calculating
-# freq=algorithm.calculate_word_frequencies(algorithm.sentencesWithoutSW)
-#
-#
-# print("freq: ",freq)
-# for key in freq.keys():
-#     if freq[key]>0.02:
-#         print ("    ",key,":  " ,freq[key])
-#
-#
-
-
-#  calculating words count and word feq
-#
-# count=0
-# for val in sentencesWithoutSW.keys():
-#     count+= len ( sentencesWithoutSW[val ] )
-# print(count)
-
-
-#
-# #model part to guess attribute of which class
-# model=model()
-# model.__int__()
-# text.txt="place attribute here "
-# result=model.predict(text.txt)
-# model.getpredictedclass(result)
-"""
-def calculate_word_frequencies(sentences):
-
-    # Count the occurrences of each word
-    word_counts = Counter (
-        doc for doc in sentences )
-
-    # Calculate the total number of words
-    total_words = sum ( word_counts.values () )
-
-    # Calculate the frequency of each word
-    word_frequencies = {word: count / total_words for word, count in word_counts.items ()}
-
-    print("word fre "+ word_frequencies)
-    return word_frequencies
-"""
+    os.system ( "python -m plantuml " + txt_plantuml_file )
+    return png_diagram_file_extracted
