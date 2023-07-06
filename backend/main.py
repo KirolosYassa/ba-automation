@@ -122,7 +122,7 @@ async def generate_use_case_with_file(
     print(f"project_id id in generate_use_case_with_file backend = {project_id}")
     text_data = getTextContent(file_url_reference)
 
-    time.sleep(4)
+    # time.sleep(4)
 
     file_data = {
         "user_id": user_id,
@@ -152,7 +152,7 @@ async def generate_class_with_file(
     print(f"project_id id in generate_class_with_file backend = {project_id}")
     text_data = getTextContent(file_url_reference)
 
-    time.sleep(4)
+    # time.sleep(4)
 
     file_data = {
         "user_id": user_id,

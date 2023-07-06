@@ -21,17 +21,22 @@
   border-style: dashed;
   border-width: 4px;
   opacity: 90%;
-}
-.upload-section p {
-  // text-align: left;
-  margin-top: 0px;
-}
-.upload-section input {
-  margin-bottom: 0px;
-  // text-align: left;
-}
-.upload-section * {
-  margin: 1rem;
+
+  button {
+    border: 0px;
+    // background-color: transparent;
+  }
+  p {
+    // text-align: left;
+    margin-top: 0px;
+  }
+  input {
+    margin-bottom: 0px;
+    // text-align: left;
+  }
+  * {
+    margin: 1rem;
+  }
 }
 .input-div p {
   margin: 0;
@@ -73,6 +78,10 @@
   }
   @include baby-bear {
     font-size: 0.7rem;
+  }
+
+  a {
+    color: $white-color;
   }
 }
 .fileBox .container {

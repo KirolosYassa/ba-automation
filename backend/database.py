@@ -77,10 +77,9 @@ def generate_diagram(file_data, diagram_type):
 
     image_reference = f"users/{data['user_name']}_{data['user_id']}/{data['project_name']}_{data['project_id']}/diagrams/{diagram_type}_{data['file_name']}.png"
 
-
     # After processing then should be saved at firestore and firebase storage
     diagram_file_pathname = processing_on_file(data, diagram_type)
-    time.sleep(6)
+    # time.sleep(6)
 
     print(f"diagram_file_pathname = {diagram_file_pathname}")
     url_reference = upload_blob(
@@ -112,7 +111,7 @@ def processing_on_file(file_data, diagram_type):
             file_text=file_data["file_text"],
             file_name=file_data["file_name"],
         )
-    time.sleep(6)
+    # time.sleep(6)
     return file_path
 
 

@@ -53,10 +53,11 @@ function SingleProject() {
     class_diagram_url_reference: "",
   });
   const [text, setText] = useState();
+  const [loading_state, setLoadingState] = useState(true);
 
   const navigate = useNavigate();
 
-  const notify = () =>
+  const uploading_toast = () =>
     toast("File Uploading", {
       position: "top-right",
       autoClose: 2000,
@@ -65,6 +66,30 @@ function SingleProject() {
       pauseOnHover: false,
       draggable: true,
       progress: currentFile.percent,
+      theme: "light",
+    });
+
+  const generating_toast = () =>
+    toast("Generating in progress...", {
+      position: "top-right",
+      autoClose: 10000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: currentFile.percent,
+      theme: "light",
+    });
+
+  const error_at_generating = () =>
+    toast("Sorry, There is an error while the process!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
       theme: "light",
     });
 
@@ -226,7 +251,9 @@ function SingleProject() {
         alert("File Type is not supported");
         return;
       }
-      notify();
+      uploading_toast();
+      setLoadingState(true);
+
       console.log(`file_uploaded.name = ${file_uploaded.name}`);
       let single_file_reference = `${reference}/files/${
         file_uploaded.name
@@ -276,6 +303,7 @@ function SingleProject() {
   }
   function getSingleProject() {
     console.log("getSingleProject is activavted");
+
     axios
       .get(
         `http://localhost:8000/single_project?user_id=${user_id}&project_id=${project_id}`
@@ -316,6 +344,8 @@ function SingleProject() {
         console.log(`root_ref = ${root_ref}`);
         files_ref = ref(storage, `${root_ref}/files/`);
         console.log("get Single Project axios data have come");
+        setLoadingState(false);
+
         // console.log(`project_name = ${project.name}`);
         // console.log(`project_name = ${project.user_name}`);
       });
@@ -329,6 +359,9 @@ function SingleProject() {
     file_url_reference = encodeURIComponent(file_url_reference);
     console.log(`file_url_reference AFTER ENCODING = ${file_url_reference}`);
 
+    generating_toast();
+    setLoadingState(true);
+
     axios
       .post(
         `http://localhost:8000/generate_use_case_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
@@ -338,6 +371,19 @@ function SingleProject() {
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
         console.log(project_object);
+
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(`error = ${error}`);
+        setLoadingState(false);
+        window.location.reload();
+        generating_toast.toast.dismiss();
+        error_at_generating();
+      })
+      .finally(() => {
+        // error_at_generating();
+        // setLoadingState(false);
       });
   };
 
@@ -350,16 +396,31 @@ function SingleProject() {
     file_url_reference = encodeURIComponent(file_url_reference);
     console.log(`file_url_reference AFTER ENCODING = ${file_url_reference}`);
 
+    generating_toast();
+    setLoadingState(true);
+
     axios
       .post(
         `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
-    )
+      )
       .then((data) => {
-         console.log(data);
-         console.log(`data.data.data = ${data.data.data}`);
-         let project_object = data.data.data;
-          console.log(project_object);
-       });
+        console.log(data);
+        console.log(`data.data.data = ${data.data.data}`);
+        let project_object = data.data.data;
+        console.log(project_object);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(`error = ${error}`);
+        setLoadingState(false);
+        window.location.reload();
+        generating_toast.toast.dismiss();
+        error_at_generating();
+      })
+      .finally(() => {
+        // error_at_generating();
+        // setLoadingState(false);
+      });
   };
   const fetch_content = (url) => {
     console.log(`url BEFORE ENCODING at fetch_content = ${url}`);
@@ -373,6 +434,10 @@ function SingleProject() {
       })
       .catch((error) => {
         console.error(`error = ${error}`);
+      })
+      .finally(() => {
+        // error_at_generating();
+        // setLoadingState(false);
       });
   };
   useEffect(() => {
@@ -433,21 +498,25 @@ function SingleProject() {
 
       <h1 className="text-left mt-3">Project Name:</h1>
       <h2 className="project-name-title">{project.name}</h2>
-      <div className=" upload-section">
+      <div className="upload-section">
         {/* <div className=" input-div"> */}
         <input type="file" name="myfile" onChange={onChange} accept=".txt" />
         <p>50 KB Max. Size is allowed</p>
         {/* </div> */}
 
-        <div className="">
-          <a
+        <button
+          disabled={loading_state}
+          onClick={handle_upload_to_firebase_storage}
+          className={`btn btn-primary `}
+        >
+          {/* <a
             href="#"
             className={`btn btn-primary `}
             onClick={handle_upload_to_firebase_storage}
-          >
-            Upload File
-          </a>
-        </div>
+          > */}
+          Upload File
+          {/* </a> */}
+        </button>
       </div>
 
       <div className="fileBox">
@@ -475,7 +544,11 @@ function SingleProject() {
                 </a>
               </button>
             ) : (
-              <button className="btn btn-dark" onClick={generateUseCaseDiagram}>
+              <button
+                disabled={loading_state}
+                className="btn btn-dark"
+                onClick={generateUseCaseDiagram}
+              >
                 Generate Use Case Diagram
               </button>
             )}
@@ -490,13 +563,19 @@ function SingleProject() {
               </button>
             ) : (
               <button
+                disabled={loading_state}
                 className="btn btn-dark"
                 onClick={generateClassDiagram}
               >
                 Generate Class Diagram
               </button>
             )}
-            <button className="btn btn-danger" href="#" onClick={deleteFile}>
+            <button
+              disabled={loading_state}
+              className="btn btn-danger"
+              href="#"
+              onClick={deleteFile}
+            >
               delete file
             </button>
           </nav>
@@ -507,6 +586,7 @@ function SingleProject() {
       <br />
       <button
         to="/Projects"
+        disabled={loading_state}
         type="button"
         className="btn btn-danger size "
         onClick={deleteProject}

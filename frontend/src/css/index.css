@@ -620,15 +620,15 @@ td h1 {
   border-width: 4px;
   opacity: 90%;
 }
-
+.upload-section button {
+  border: 0px;
+}
 .upload-section p {
   margin-top: 0px;
 }
-
 .upload-section input {
   margin-bottom: 0px;
 }
-
 .upload-section * {
   margin: 1rem;
 }
@@ -684,6 +684,9 @@ td h1 {
   .fileName p {
     font-size: 0.7rem;
   }
+}
+.fileName p a {
+  color: #f6f6f6;
 }
 
 .fileBox .container {
