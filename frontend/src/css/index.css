@@ -660,12 +660,12 @@ td h1 {
 }
 @media (max-width: 900px) {
   .fileName {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }
 @media (max-width: 600px) {
   .fileName {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -677,12 +677,12 @@ td h1 {
 }
 @media (max-width: 900px) {
   .fileName p {
-    font-size: 0.4rem;
+    font-size: 0.8rem;
   }
 }
 @media (max-width: 600px) {
   .fileName p {
-    font-size: 0.3rem;
+    font-size: 0.7rem;
   }
 }
 

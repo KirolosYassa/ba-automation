@@ -1,11 +1,14 @@
 /* 
-cd .\backend\
-python -m uvicorn main:app --reload
+cd .\frontend\
+npm start
 
 
 cd .\frontend\
 run npm build
 npm start
+
+npm run build 
+firebase deploy 
 
 */
 import "./css/index.css";
@@ -15,15 +18,15 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Footer from "./Components/Footer";
 import Home from "./pages/Home";
-import Home_SignedIn from "./pages/Home_SignedIn";
+// import Home_SignedIn from "./pages/Home_SignedIn";
 import Myprofile from "./pages/Myprofile";
 import Myprojects from "./pages/Myprojects";
 import About from "./pages/About";
-import About_SignedIn from "./pages/About_SignedIn";
+// import About_SignedIn from "./pages/About_SignedIn";
 import SingleProject from "./pages/SingleProject";
 import Addproject from "./pages/Addproject";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {

@@ -5,11 +5,11 @@ import HeaderSignedIn from "../Components/HeaderSignedIn";
 import axios from "axios";
 import Swal from "sweetalert2";
 import v4 from "../id_generator";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import { btoa } from "base64-js";
-import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
-import TextEditor from "../Components/uploaded File.js/textEditor";
-import { ToastContainer, toast } from "react-toastify";
+// import ProgressBar from "react-bootstrap/ProgressBar";
+// import { btoa } from "base64-js";
+// import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
+// import TextEditor from "../Components/uploaded File.js/textEditor";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
@@ -18,7 +18,6 @@ import {
   listAll,
   getDownloadURL,
   uploadBytesResumable,
-  uploadBytes,
   deleteObject,
 } from "../firebase";
 
@@ -69,11 +68,6 @@ function SingleProject() {
       theme: "light",
     });
 
-  function automate_url(url) {
-    let starting_url = "https://firebasestorage.googleapis.com";
-    let new_url = url.replace(`${starting_url}`, "/api");
-    return new_url;
-  }
   const deleteProject = () => {
     Swal.fire({
       title: "Do you want to delete the Project?",
@@ -216,7 +210,7 @@ function SingleProject() {
 
   // "users/Kirolos_jxdKLSaFbaa9HO4kANUvN0p93y03/LMS_anaRzP1Z2w0ew0bSfdur/files/comment.txt_626390af-9f14-4bf9-9459-f985677afed6"
   function handle_upload_to_firebase_storage() {
-    if (currentFile != undefined) {
+    if (currentFile !== undefined) {
       // if (deleteFile()) {
       console.log(`reference = ${reference}`);
       // console.log(`uploadedFiles = ${uploadedFiles}`);
@@ -228,7 +222,7 @@ function SingleProject() {
         alert("File upload Max size exceeded");
         return;
       }
-      if (file_uploaded.type != "text/plain") {
+      if (file_uploaded.type !== "text/plain") {
         alert("File Type is not supported");
         return;
       }
@@ -304,7 +298,7 @@ function SingleProject() {
         console.log(`project data name = ${project_data.name}`);
         let files = project_data.files;
         console.log(`files = ${JSON.stringify(files)}`);
-        if (files != undefined) {
+        if (files !== undefined) {
           const file_name = Object.keys(files)[0];
           console.log(`file name = ${file_name}`);
           let file_url_reference = files[file_name].url_reference;
@@ -327,7 +321,9 @@ function SingleProject() {
       });
   }
 
-  const generateUseCaseDiagram = (file_name, file_url_reference) => {
+  const generateUseCaseDiagram = () => {
+    let file_name = file.name;
+    let file_url_reference = file.url_reference;
     console.log(file_name);
     console.log(`file_url_reference BEFORE ENCODING = ${file_url_reference}`);
     file_url_reference = encodeURIComponent(file_url_reference);
@@ -342,35 +338,27 @@ function SingleProject() {
         console.log(`data.data.data = ${data.data.data}`);
         let project_object = data.data.data;
         console.log(project_object);
-        // let project_data = {
-        //   name: project_object[project_id].name,
-        //   description: project_object[project_id].description,
-        //   project_id: project_object[project_id].project_id,
-        //   user_id: project_object[project_id].user_id,
-        //   user_name: project_object[project_id].user_name,
-        //   files: project_object[project_id].files,
-        // };
       });
   };
 
   const generateClassDiagram = (file_name, file_url_reference) => {
-    console.log(file_name);
-    console.log(file_url_reference);
-
-    axios
-      .post(
-        `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
-      )
-      .then((data) => {
-        // console.log(data);
-        console.log(`data.data.data = ${data.data.data}`);
-        let project_object = data.data.data;
-        console.log(project_object);
-      });
+    // console.log(file_name);
+    // console.log(file_url_reference);
+    // axios
+    //   .post(
+    //     `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
+    //   )
+    //   .then((data) => {
+    //     // console.log(data);
+    //     console.log(`data.data.data = ${data.data.data}`);
+    //     let project_object = data.data.data;
+    //     console.log(project_object);
+    //   });
   };
   const fetch_content = (url) => {
+    console.log(`url BEFORE ENCODING at fetch_content = ${url}`);
     url = encodeURIComponent(url);
-    console.log(`url = ${url}`);
+    console.log(`url AFTER ENCODING at fetch_content = ${url}`);
     axios
       .get(`http://localhost:8000/text_content?url=${url}`)
       .then((response) => {
@@ -384,13 +372,6 @@ function SingleProject() {
   useEffect(() => {
     getSingleProject();
   }, []);
-
-  const logUseCaseTrue = () => {
-    console.log("use case true");
-  };
-  const logUseCaseFalse = () => {
-    console.log("use case false");
-  };
 
   function handleChange(event) {
     console.log(`event.target.files[0] = ${event.target.files}`);
@@ -488,10 +469,7 @@ function SingleProject() {
                 </a>
               </button>
             ) : (
-              <button
-                className="btn btn-dark"
-                onClick={generateUseCaseDiagram(file.name, file.url_reference)}
-              >
+              <button className="btn btn-dark" onClick={generateUseCaseDiagram}>
                 Generate Use Case Diagram
               </button>
             )}
