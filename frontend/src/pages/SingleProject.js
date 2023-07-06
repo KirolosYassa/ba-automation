@@ -341,19 +341,25 @@ function SingleProject() {
       });
   };
 
-  const generateClassDiagram = (file_name, file_url_reference) => {
-    // console.log(file_name);
-    // console.log(file_url_reference);
-    // axios
-    //   .post(
-    //     `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
-    //   )
-    //   .then((data) => {
-    //     // console.log(data);
-    //     console.log(`data.data.data = ${data.data.data}`);
-    //     let project_object = data.data.data;
-    //     console.log(project_object);
-    //   });
+  const generateClassDiagram = () => {
+    let file_name = file.name;
+    let file_url_reference = file.url_reference;
+
+    console.log(file_name);
+    console.log(`file_url_reference BEFORE ENCODING = ${file_url_reference}`);
+    file_url_reference = encodeURIComponent(file_url_reference);
+    console.log(`file_url_reference AFTER ENCODING = ${file_url_reference}`);
+
+    axios
+      .post(
+        `http://localhost:8000/generate_class_with_file?user_id=${user_id}&user_name=${project.user_name}&project_id=${project_id}&project_name=${project.name}&file_url_reference=${file_url_reference}&file_name=${file_name}`
+    )
+      .then((data) => {
+         console.log(data);
+         console.log(`data.data.data = ${data.data.data}`);
+         let project_object = data.data.data;
+          console.log(project_object);
+       });
   };
   const fetch_content = (url) => {
     console.log(`url BEFORE ENCODING at fetch_content = ${url}`);
@@ -485,7 +491,7 @@ function SingleProject() {
             ) : (
               <button
                 className="btn btn-dark"
-                onClick={generateClassDiagram(file.name, file.url_reference)}
+                onClick={generateClassDiagram}
               >
                 Generate Class Diagram
               </button>
