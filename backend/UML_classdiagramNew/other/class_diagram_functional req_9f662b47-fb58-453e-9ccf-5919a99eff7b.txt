@@ -1,0 +1,42 @@
+ @startuml 
+ class creation_date 
+ class customer 
+customer : + payment
+customer : + date
+customer : + total_price
+customer : + payment_method
+customer : + customer
+ class identifier 
+ class inventory 
+inventory : + inventory
+inventory : + products
+ class payment 
+payment : + Payment
+payment : + identifier
+payment : + date
+payment : + total_price
+payment : + details
+ class system 
+ class total_price 
+ class product 
+product : + A product
+product : + identifier
+product : + name
+product : + supplier
+product : + price
+ class customer_state 
+customer_state : + New
+customer_state : + Active
+customer_state : + Block
+customer_state : + Ban
+ system o-- customer 
+ system o-- inventory 
+ customer o-- shopping_cart 
+ class order 
+ order o-- product 
+ class order 
+ order *-- payment 
+customer : + login
+customer : + register
+order : + carry products
+ @enduml 

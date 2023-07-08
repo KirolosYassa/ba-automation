@@ -1,0 +1,37 @@
+ @startuml 
+ left to right direction 
+ usecase "describe myself on my page" 
+ :site member: --> (describe myself on my page)
+ usecase "fill application to become Certified Scrum Practitioner" 
+ :site member: --> (fill application to become Certified Scrum Practitioner)
+ usecase "view profiles of members" 
+ :site member: --> (view profiles of members)
+ usecase "find others I might want to connect with" 
+ :site member: --> (find others I might want to connect with)
+ usecase "shared in case" 
+ :site member: --> (shared in case)
+ usecase "mark address of my profile" 
+ :site member: --> (mark address of my profile)
+ usecase "send email via form" 
+ :site member: --> (send email via form)
+ usecase "fill fields for - text" 
+ :I: --> (fill fields for - text)
+ usecase "be let text be HTML or" 
+ :It: --> (be let text be HTML or)
+ usecase "Note of what became known as Certified Scrum   Professional" 
+ :Certified Scrum Practitioner: --> (Note of what became known as Certified Scrum   Professional)
+ usecase "showcase experience about me" 
+ :Practitioner: --> (showcase experience about me)
+ usecase "write article for site with article   showing my CSP or CST status" 
+ :Practitioner: --> (write article for site with article   showing my CSP or CST status)
+ usecase "learn about me" 
+ :Trainer: --> (learn about me)
+ usecase "approach" 
+ :example: --> (approach)
+ usecase "page about each" 
+ :trainer: --> (page about each)
+ usecase "read applications" 
+ :15  Example User Stories: --> (read applications)
+ usecase "edit profile for members" 
+ :site administrator: --> (edit profile for members)
+ @enduml 

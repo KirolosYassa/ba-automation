@@ -1,0 +1,7 @@
+ @startuml 
+ class cart 
+ class new_product 
+ class product 
+ class stock 
+ class user 
+ @enduml 
