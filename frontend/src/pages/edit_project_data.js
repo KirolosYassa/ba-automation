@@ -1,18 +1,18 @@
 import axios from "axios";
-// import { Button } from "bootstrap";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import HeaderSignedIn from "../Components/HeaderSignedIn";
 import Swal from "sweetalert2";
 
-function Addproject() {
+function EditProjectData() {
+  let { user_id, project_id } = useParams();
   let [project, setProject] = useState({
+    user_id: user_id,
     name: "",
     description: "",
   });
 
   const navigate = useNavigate();
-  let { user_id } = useParams();
 
   function onChange(e) {
     setProject((prevState) => ({
@@ -21,7 +21,7 @@ function Addproject() {
     }));
   }
 
-  const addPro = (e) => {
+  const save_project_details = (e) => {
     e.preventDefault();
 
     var project_data = {
@@ -30,35 +30,35 @@ function Addproject() {
       description: project.description,
     };
     // API WIth backends
-    axios
-      .post(`http://localhost:8000/addproject`, project_data)
-      .then((response) => {
-        console.log("response.status = " + response.status);
-        console.log("response = " + response);
-        if (response.status === 200) {
-          Swal.fire({
-            title: `Project " ${project.name}" added successfully `,
-            icon: "success",
-            showDenyButton: false,
-            showConfirmButton: true,
-            confirmButtonText: "OK",
-          });
-          navigate(`/projects/${user_id}`);
-        } else {
-          console.log("response = " + response);
+    // axios
+    //   .post(`http://localhost:8000/addproject`, project_data)
+    //   .then((response) => {
+    //     console.log("response.status = " + response.status);
+    //     console.log("response = " + response);
+    //     if (response.status === 200) {
+    //       Swal.fire({
+    //         title: `Project "${project.name}" Edited successfully `,
+    //         icon: "success",
+    //         showDenyButton: false,
+    //         showConfirmButton: true,
+    //         confirmButtonText: "OK",
+    //       });
+    //       navigate(`/projects/${user_id}`);
+    //     } else {
+    //       console.log("response = " + response);
 
-          Swal.fire({
-            title: "Project is not added",
-            icon: "info",
-          });
-        }
-      });
+    //       Swal.fire({
+    //         title: "Project is not added",
+    //         icon: "info",
+    //       });
+    //     }
+    //   });
   };
   return (
     <>
       <HeaderSignedIn />
       <form className="centering mt-5">
-        <h3>Add new Project</h3>
+        <h3>Edit The Project</h3>
         <div className="mb-3">
           <label>Project name:</label>
           <input
@@ -66,6 +66,7 @@ function Addproject() {
             name="name"
             type="text"
             className="form-control"
+            // placeholder={project_name}
             placeholder="Enter Project Name"
             onChange={onChange}
           />
@@ -78,6 +79,7 @@ function Addproject() {
             name="description"
             type="text"
             className="form-control"
+            // placeholder={project_description}
             placeholder="Enter description"
             onChange={onChange}
             rows="5"
@@ -89,13 +91,13 @@ function Addproject() {
             to="/Projects"
             type="submit"
             className="btn btn-primary"
-            onClick={addPro}
+            onClick={save_project_details}
           >
-            Add
+            Save
           </button>
         </div>
       </form>
     </>
   );
 }
-export default Addproject;
+export default EditProjectData;

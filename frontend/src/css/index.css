@@ -558,6 +558,12 @@ td h1 {
   background-color: #3e8e41;
 }
 
+.input-err-msg {
+  font-size: 0.9rem;
+  text-align: left;
+  color: red;
+}
+
 .height-300 {
   max-height: 300px;
   align-items: center;
@@ -722,6 +728,34 @@ td h1 {
 
 .projects-section {
   padding: 2rem;
+}
+
+.edit-button__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  width: 1rem;
+  height: 1rem;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 0;
+}
+.edit-button__badge img {
+  width: 1.5rem;
+}
+@media (max-width: 600px) {
+  .edit-button__badge img {
+    width: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .edit-button__badge {
+    top: 0.5rem;
+    right: 1rem;
+  }
 }
 
 .profile-setting-section {

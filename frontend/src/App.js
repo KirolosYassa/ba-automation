@@ -1,5 +1,9 @@
 /* 
 cd .\frontend\
+npm install
+
+
+cd .\frontend\
 npm start
 
 
@@ -25,6 +29,7 @@ import About from "./pages/About";
 // import About_SignedIn from "./pages/About_SignedIn";
 import SingleProject from "./pages/SingleProject";
 import Addproject from "./pages/Addproject";
+import EditProjectData from "./pages/edit_project_data";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,6 +55,10 @@ function App() {
           element={<SingleProject />}
         />
         <Route path="addproject/:user_id" element={<Addproject />} />
+        <Route
+          path="edit_project_data/profile/:user_id/project/:project_id"
+          element={<EditProjectData />}
+        />
       </Routes>
       <Footer></Footer>
     </div>
