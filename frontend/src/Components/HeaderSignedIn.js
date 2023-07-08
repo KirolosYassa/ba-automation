@@ -16,7 +16,7 @@ function HeaderSignedIn() {
     <>
       <nav className="navbar navbar-expand-lg">
         <div className="container">
-          <Link className="navbar-brand" to={`/profile/${user_id}`}>
+          <Link className="navbar-brand" to={`/projects/${user_id}`}>
             <img className="img-circle" alt="M4 mawgoda " src={Image1} />
             <p>
               UML

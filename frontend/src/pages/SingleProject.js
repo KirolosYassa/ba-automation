@@ -5,12 +5,9 @@ import HeaderSignedIn from "../Components/HeaderSignedIn";
 import axios from "axios";
 import Swal from "sweetalert2";
 import v4 from "../id_generator";
-// import ProgressBar from "react-bootstrap/ProgressBar";
-// import { btoa } from "base64-js";
-// import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
-// import TextEditor from "../Components/uploaded File.js/textEditor";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FullscreenLoading from "react-fullscreen-loading";
 
 import {
   storage,
@@ -53,7 +50,7 @@ function SingleProject() {
     class_diagram_url_reference: "",
   });
   const [text, setText] = useState();
-  const [loading_state, setLoadingState] = useState(true);
+  const [loading_state, setLoadingState] = useState(false);
 
   const navigate = useNavigate();
 
@@ -82,13 +79,36 @@ function SingleProject() {
     });
 
   const error_at_generating = () =>
-    toast("Sorry, There is an error while the process!", {
+    toast.error("Sorry, There is an error while the process!", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const error_at_file_type_uploaded = () =>
+    toast.error("File Type is not supported!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
+  const error_at_file_size_uploaded = () =>
+    toast.error("File upload Max size exceeded!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
       progress: undefined,
       theme: "light",
     });
@@ -157,7 +177,7 @@ function SingleProject() {
             });
           })
           .then(() => {
-            navigate(`/profile/${user_id}`);
+            navigate(`/projects/${user_id}`);
           });
       } else {
         Swal.fire({
@@ -243,12 +263,19 @@ function SingleProject() {
       console.log(`currentFile = ${currentFile}`);
       // console.log(`file_uploaded.size = ${file_uploaded.size}`);
       let file_uploaded = currentFile;
-      if (file_uploaded.size > 51200) {
-        alert("File upload Max size exceeded");
-        return;
-      }
-      if (file_uploaded.type !== "text/plain") {
-        alert("File Type is not supported");
+      try {
+        if (file_uploaded.size > 51200) {
+          throw "FileSize";
+        }
+        if (file_uploaded.type !== "text/plain") {
+          throw "FileType";
+        }
+      } catch (error) {
+        if (error === "FileType") {
+          error_at_file_type_uploaded();
+        } else if (error === "FileSize") {
+          error_at_file_size_uploaded();
+        }
         return;
       }
       uploading_toast();
@@ -441,6 +468,10 @@ function SingleProject() {
       });
   };
   useEffect(() => {
+    setLoadingState(true);
+    // setTimeout(() => {
+    //   setLoadingState(false);
+    // }, 2000);
     getSingleProject();
   }, []);
 
@@ -494,105 +525,158 @@ function SingleProject() {
   return (
     <>
       <HeaderSignedIn />
-      {/* {console.log(project)} */}
+      {loading_state ? (
+        <div>
+          <FullscreenLoading
+            loading={loading_state}
+            loaderColor="black"
+            loaderSize="md"
+            loaderText="Please wait..."
+          />
+          <h1 className="text-left mt-3">Project Name:</h1>
+          <h2 className="project-name-title"></h2>
+          <div className="upload-section">
+            <input type="file" name="myfile" accept=".txt" />
+            <p>50 KB Max. Size is allowed</p>
 
-      <h1 className="text-left mt-3">Project Name:</h1>
-      <h2 className="project-name-title">{project.name}</h2>
-      <div className="upload-section">
-        {/* <div className=" input-div"> */}
-        <input type="file" name="myfile" onChange={onChange} accept=".txt" />
-        <p>50 KB Max. Size is allowed</p>
-        {/* </div> */}
+            <button className={`btn btn-primary `}>Upload File</button>
+          </div>
+          <div className="fileBox">
+            <div className="container">
+              <nav className="navbar navbar-expand-lg navbar-light bg-light ml-auto">
+                {/* USE CASE DIAGRAM */}
 
-        <button
-          disabled={loading_state}
-          onClick={handle_upload_to_firebase_storage}
-          className={`btn btn-primary `}
-        >
-          {/* <a
+                <button className="btn btn-dark">
+                  Generate Use Case Diagram
+                </button>
+
+                {/* CLASS DIAGRAM */}
+
+                <button className="btn btn-dark">Generate Class Diagram</button>
+                <button className="btn btn-danger" href="#">
+                  delete file
+                </button>
+              </nav>
+            </div>
+            <div className="fileShown"></div>
+          </div>
+          <br />
+          <button to="/Projects" type="button" className="btn btn-danger size ">
+            Delete Project
+          </button>{" "}
+        </div>
+      ) : (
+        <div>
+          <h1 className="text-left mt-3">Project Name:</h1>
+          <h2 className="project-name-title">{project.name}</h2>
+          <div className="upload-section">
+            {/* <div className=" input-div"> */}
+            <input
+              type="file"
+              name="myfile"
+              onChange={onChange}
+              accept=".txt"
+            />
+            <p>50 KB Max. Size is allowed</p>
+            {/* </div> */}
+
+            <button
+              disabled={loading_state}
+              onClick={handle_upload_to_firebase_storage}
+              className={`btn btn-primary `}
+            >
+              {/* <a
             href="#"
             className={`btn btn-primary `}
             onClick={handle_upload_to_firebase_storage}
           > */}
-          Upload File
-          {/* </a> */}
-        </button>
-      </div>
-
-      <div className="fileBox">
-        <div className="container">
-          <nav className="navbar navbar-expand-lg navbar-light bg-light ml-auto">
-            {statefilename === lastfilename ? (
-              <h3 className="fileName">
-                {statefilename}
-                {/* <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p> */}
-              </h3>
-            ) : (
-              <h3 className="fileName">
-                {lastfilename}
-                <p className="">
-                  ( {(parseInt(file.size) / 1024).toFixed(2)} KB)
-                </p>
-              </h3>
-            )}
-            {/* USE CASE DIAGRAM */}
-
-            {file.has_useCase_diagram ? (
-              <button className="btn btn-success">
-                <a target="_blank" href={file.usecase_diagram_url_reference}>
-                  {file.name} Use Case Diagram
-                </a>
-              </button>
-            ) : (
-              <button
-                disabled={loading_state}
-                className="btn btn-dark"
-                onClick={generateUseCaseDiagram}
-              >
-                Generate Use Case Diagram
-              </button>
-            )}
-
-            {/* CLASS DIAGRAM */}
-
-            {file.has_Class_diagram ? (
-              <button className="btn btn-success">
-                <a target="_blank" href={file.class_diagram_url_reference}>
-                  {file.name} Class Diagram
-                </a>
-              </button>
-            ) : (
-              <button
-                disabled={loading_state}
-                className="btn btn-dark"
-                onClick={generateClassDiagram}
-              >
-                Generate Class Diagram
-              </button>
-            )}
-            <button
-              disabled={loading_state}
-              className="btn btn-danger"
-              href="#"
-              onClick={deleteFile}
-            >
-              delete file
+              Upload File
+              {/* </a> */}
             </button>
-          </nav>
-        </div>
-        <div className="fileShown">{text && <pre>{text}</pre>}</div>
-      </div>
+          </div>
 
-      <br />
-      <button
-        to="/Projects"
-        disabled={loading_state}
-        type="button"
-        className="btn btn-danger size "
-        onClick={deleteProject}
-      >
-        Delete Project
-      </button>
+          <div className="fileBox">
+            <div className="container">
+              <nav className="navbar navbar-expand-lg navbar-light bg-light ml-auto">
+                {statefilename === lastfilename ? (
+                  <h3 className="fileName">
+                    {statefilename}
+                    {/* <p className="">( {(parseInt(file.size) / 1024).toFixed(2)} KB)</p> */}
+                  </h3>
+                ) : (
+                  <h3 className="fileName">
+                    {lastfilename}
+                    <p className="">
+                      ( {(parseInt(file.size) / 1024).toFixed(2)} KB)
+                    </p>
+                  </h3>
+                )}
+                {/* USE CASE DIAGRAM */}
+
+                {file.has_useCase_diagram ? (
+                  <button className="btn btn-success">
+                    <a
+                      target="_blank"
+                      href={file.usecase_diagram_url_reference}
+                    >
+                      {file.name} Use Case Diagram
+                    </a>
+                  </button>
+                ) : (
+                  <button
+                    disabled={loading_state}
+                    className="btn btn-dark"
+                    onClick={generateUseCaseDiagram}
+                  >
+                    Generate Use Case Diagram
+                  </button>
+                )}
+
+                {/* CLASS DIAGRAM */}
+
+                {file.has_Class_diagram ? (
+                  <button className="btn btn-success">
+                    <a target="_blank" href={file.class_diagram_url_reference}>
+                      {file.name} Class Diagram
+                    </a>
+                  </button>
+                ) : (
+                  <button
+                    disabled={loading_state}
+                    className="btn btn-dark"
+                    onClick={generateClassDiagram}
+                  >
+                    Generate Class Diagram
+                  </button>
+                )}
+                <button
+                  disabled={loading_state}
+                  className="btn btn-danger"
+                  href="#"
+                  onClick={deleteFile}
+                >
+                  delete file
+                </button>
+              </nav>
+            </div>
+            <div className="fileShown">
+              {text && <pre>{text}</pre>}
+              {/* {text !== undefined ? <pre>{text}</pre> : <h3>Loading...</h3>} */}
+            </div>
+          </div>
+
+          <br />
+          <button
+            to="/Projects"
+            disabled={loading_state}
+            type="button"
+            className="btn btn-danger size "
+            onClick={deleteProject}
+          >
+            Delete Project
+          </button>
+        </div>
+      )}
     </>
   );
 }

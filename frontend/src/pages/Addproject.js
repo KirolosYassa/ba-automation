@@ -43,7 +43,7 @@ function Addproject() {
             showConfirmButton: true,
             confirmButtonText: "OK",
           });
-          navigate(`/profile/${user_id}`);
+          navigate(`/projects/${user_id}`);
         } else {
           console.log("response = " + response);
 
@@ -73,13 +73,14 @@ function Addproject() {
 
         <div className="mb-3">
           <label>Description:</label>
-          <input
+          <textarea
             id="description"
             name="description"
             type="text"
             className="form-control"
             placeholder="Enter description"
             onChange={onChange}
+            rows="5"
           />
         </div>
 
