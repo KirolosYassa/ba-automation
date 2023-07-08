@@ -5,14 +5,9 @@ import HeaderSignedIn from "../Components/HeaderSignedIn";
 import axios from "axios";
 import Swal from "sweetalert2";
 import v4 from "../id_generator";
-// import ProgressBar from "react-bootstrap/ProgressBar";
-// import { btoa } from "base64-js";
-// import FileUploadForm from "../Components/uploaded File.js/uploadedFile";
-// import TextEditor from "../Components/uploaded File.js/textEditor";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FullscreenLoading from "react-fullscreen-loading";
-import image_of_single_project from "./image_of_single_project";
 
 import {
   storage,
@@ -182,7 +177,7 @@ function SingleProject() {
             });
           })
           .then(() => {
-            navigate(`/profile/${user_id}`);
+            navigate(`/projects/${user_id}`);
           });
       } else {
         Swal.fire({
@@ -664,7 +659,10 @@ function SingleProject() {
                 </button>
               </nav>
             </div>
-            <div className="fileShown">{text && <pre>{text}</pre>}</div>
+            <div className="fileShown">
+              {text && <pre>{text}</pre>}
+              {/* {text !== undefined ? <pre>{text}</pre> : <h3>Loading...</h3>} */}
+            </div>
           </div>
 
           <br />
